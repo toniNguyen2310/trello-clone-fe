@@ -15,11 +15,13 @@ function Column(props) {
   const [cards, setCards] = useState(
     softOrder(columnProps.cards, columnProps.cardOrder, "id")
   );
+
+  //ENTER TO SUBMIT
   const handleKeyPress = (e) => {
     let key = e.keyCode || e.which;
     if (key === 13) {
+      e.preventDefault();
       handleEditTitleColumn();
-
       setIsEditTitle(false);
     }
   };
@@ -104,17 +106,19 @@ function Column(props) {
               <input
                 value={titleColumn}
                 type="text"
-                onKeyUp={(e) => handleKeyPress(e)}
+                onKeyDown={(e) => handleKeyPress(e)}
                 onChange={(e) => setTitleColumn(e.target.value)}
               />
             </div>
           </header>
         ) : (
-          <header
-            className="column-drag-handle"
-            onClick={() => setIsEditTitle(true)}
-          >
-            <div>{column.title}</div>
+          <header className="column-drag-handle">
+            <div
+              className="column-drag-title"
+              onClick={() => setIsEditTitle(true)}
+            >
+              {column.title}
+            </div>
             <div
               className="column-drag-handle-delete"
               onClick={handleDeleteColumn}
@@ -125,9 +129,16 @@ function Column(props) {
         )}
 
         <div className="list-card">
-          <ListCard onCardDrop={onCardDrop} cards={cards} column={column} />
+          <ListCard
+            onCardDrop={onCardDrop}
+            cards={cards}
+            setCards={setCards}
+            listColumns={listColumns}
+            column={column}
+          />
           {showAddCard && (
             <AddCard
+              setCards={setCards}
               handleAddCard={handleAddCard}
               setShowAddCard={setShowAddCard}
             />

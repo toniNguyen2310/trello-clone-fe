@@ -34,7 +34,8 @@ body {
       background-color: #072754;
       display: flex;
       align-items: center;
-      box-sizing: border-box;
+      justify-content: space-between;
+      // box-sizing: border-box;
       border-bottom: 1px solid #0e336d;
       // height: 50px;
       .logo {
@@ -56,6 +57,22 @@ body {
           content: url("https://trello.com/assets/87e1af770a49ce8e84e3.gif");
         }
       }
+      .account {
+        margin-right: 40px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background: none rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        color: #f8eded;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .account:hover {
+        color: #fff;
+      }
     }
 
     &.board {
@@ -72,270 +89,280 @@ body {
     }
   }
   .board-columns {
+    z-index: 2;
+    overflow-y: hidden;
+    margin-top: 10px;
     display: flex;
-    gap: 12px;
     overflow-x: auto;
-    padding-top: 10px;
-    // height: calc(100vh - 50px - 40px);
-    // background-color: red;
-    box-sizing: border-box;
-    .column {
-      border-radius: $column-border-radius;
+    gap: 12px;
 
-      flex: 0 0 auto;
-      width: 300px;
-      box-sizing: border-box !important;
-      // max-height: ;
-      // height: calc(100% - 10px);
-      max-height: calc(100% - #{2 * $gap});
-
-      > * {
-        // background-color: #fff;
-        color: #000;
-        padding: 0 8px;
-      }
-      header {
-        cursor: pointer;
-        background-color: #ededed;
-        padding: 5px 8px 0;
-
-        // height: $column-header-height;
-        line-height: $column-header-height;
-        font-weight: bold;
-        border-top-left-radius: $column-border-radius;
-        border-top-right-radius: $column-border-radius;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-sizing: border-box;
-        //input edit
-        .edit-title-column {
-          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-            Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-            sans-serif;
-          // background-color: red;
-          padding: 5px;
-          width: 100%;
-          border: none;
-          outline: none;
-          line-height: 10px;
-          font-size: 15px;
-          resize: none;
-        }
-
-        //delete button
-        .column-drag-handle-delete {
-          opacity: 0;
-          padding: 10px;
-          cursor: pointer;
-          svg {
-            font-size: 13px;
-          }
-        }
-        .column-drag-handle-delete:hover {
-          line-height: 0;
-          background-color: #b6b2b2;
-          opacity: 1;
-          border-radius: 50%;
-          svg {
-            font-size: 13px;
-          }
-        }
-      }
-      footer {
-        background-color: #ededed;
-        padding-bottom: 5px;
-        // padding: 10px;
-        height: $column-footer-height;
-        line-height: $column-footer-height;
-        border-bottom-left-radius: $column-border-radius;
-        border-bottom-right-radius: $column-border-radius;
-        display: flex;
-        align-items: center;
-        // box-sizing: border-box;
-        font-weight: 600;
-        .add-card {
-          // width: 80%;
-          height: 100%;
-          width: 90%;
-          display: flex;
-          align-items: center;
-          border-radius: 5px;
-          padding-left: 10px;
-          gap: 10px;
-          cursor: pointer;
-          margin-bottom: 5px;
-        }
-        .add-card:hover {
-          background-color: #d4cfcf;
-        }
-      }
-
-      .list-card {
-        z-index: 1;
-        padding-top: 5px;
-        font-size: 15px;
-        background-color: #ededed;
-        margin: 0;
-        max-height: calc(
-          100% - #{$column-header-height} - #{$column-footer-height}
-        );
-        overflow-y: auto;
-        .card {
-          position: relative;
-          padding: $gap;
-          margin-bottom: $gap;
-          background-color: #fff;
-          border: 2px solid #fff;
+    .smooth-dnd-container {
+      .smooth-dnd-draggable-wrapper {
+        .column {
+          height: 580px;
+          height: calc(100vh - 40px - 50px - 40px);
+          width: 300px;
           border-radius: $column-border-radius;
-          word-wrap: break-word;
-          box-sizing: border-box;
-          cursor: pointer;
-          box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
-          .card-delete {
-            position: absolute;
-            padding: 5px;
-            display: none;
-            background-color: #fff;
-            top: 8px;
-            right: 10px;
-            border-radius: 50%;
-            svg {
-              font-size: 13px;
+          flex: 0 0 auto;
+
+          > * {
+            color: #000;
+            padding: 0 8px;
+          }
+          header {
+            cursor: pointer;
+            background-color: #ededed;
+            padding: 5px 8px 0;
+            height: $column-header-height;
+            line-height: $column-header-height;
+            font-weight: bold;
+            border-top-left-radius: $column-border-radius;
+            border-top-right-radius: $column-border-radius;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            //input edit
+            .edit-title-column {
+              font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+                "Helvetica Neue", sans-serif;
+              // background-color: red;
+              padding: 5px;
+              width: 100%;
+              border: none;
+              outline: none;
+              line-height: 10px;
+              font-size: 15px;
+              resize: none;
+            }
+
+            //title
+            .column-drag-title {
+              // background-color: red;
+            }
+
+            //delete button
+            .column-drag-handle-delete {
+              opacity: 0;
+              padding: 10px;
+              cursor: pointer;
+              svg {
+                font-size: 13px;
+              }
+            }
+            .column-drag-handle-delete:hover {
+              line-height: 0;
+              background-color: #b6b2b2;
+              opacity: 1;
+              border-radius: 50%;
+              svg {
+                font-size: 13px;
+              }
             }
           }
-          .card-delete:hover {
-            background-color: #ccc9c9;
-          }
-          &:not(:last-child) {
-            margin-bottom: $gap;
-          }
-
-          .texarea {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont,
-              "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-              "Helvetica Neue", sans-serif;
-            width: 100%;
-            border: none;
-            outline: none;
-            line-height: 20px;
-            font-size: 15px;
-            resize: none;
-          }
-        }
-        .cover-edit-cart {
-          margin-bottom: 10px;
-          .card-edit {
-            // display: none;
-            position: relative;
-            z-index: 2;
-            // border: 2px solid #000;
-            padding: 5px;
-
-            .card-create {
-              // position: absolute;
-              top: 110%;
+          footer {
+            background-color: #ededed;
+            padding-bottom: 5px;
+            // padding: 10px;
+            height: $column-footer-height;
+            line-height: $column-footer-height;
+            border-bottom-left-radius: $column-border-radius;
+            border-bottom-right-radius: $column-border-radius;
+            display: flex;
+            align-items: center;
+            // box-sizing: border-box;
+            font-weight: 600;
+            .add-card {
+              // width: 80%;
+              height: 100%;
+              width: 90%;
               display: flex;
+              align-items: center;
+              border-radius: 5px;
+              padding-left: 10px;
               gap: 10px;
-              &-btn {
-                font-size: 14px;
-                font-weight: 600;
+              cursor: pointer;
+              margin-bottom: 5px;
+            }
+            .add-card:hover {
+              background-color: #d4cfcf;
+            }
+          }
+          .list-card {
+            z-index: 1;
+            padding-top: 5px;
+            font-size: 15px;
+            background-color: #ededed;
+            margin: 0;
+            max-height: calc(
+              100% - #{$column-header-height} - #{$column-footer-height}
+            );
+            overflow-y: auto;
+            .card {
+              z-index: 1;
+              position: relative;
+              padding: $gap;
+              margin-bottom: $gap;
+              background-color: #fff;
+              border: 2px solid #fff;
+              border-radius: $column-border-radius;
+              word-wrap: break-word;
+              box-sizing: border-box;
+              cursor: pointer;
+              box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
+
+              .card-content {
+                // background-color: blue;
+              }
+
+              .card-delete {
+                z-index: 2;
+                position: absolute;
+                padding: 5px;
+                display: none;
+                background-color: #fff;
+                top: 8px;
+                right: 10px;
+                border-radius: 50%;
+                svg {
+                  font-size: 13px;
+                }
+              }
+              .card-delete:hover {
+                background-color: #ccc9c9;
+              }
+              &:not(:last-child) {
+                margin-bottom: $gap;
+              }
+
+              .texarea {
+                font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                  "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+                  "Helvetica Neue", sans-serif;
+                width: 100%;
+                border: none;
+                outline: none;
+                line-height: 20px;
+                font-size: 15px;
+                resize: none;
+              }
+            }
+            .cover-edit-cart {
+              margin-bottom: 10px;
+              .card-edit {
+                // display: none;
+                position: relative;
+                z-index: 2;
+                // border: 2px solid #000;
+                padding: 5px;
+
+                .card-create {
+                  // position: absolute;
+                  top: 110%;
+                  display: flex;
+                  gap: 10px;
+                  &-btn {
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #fff;
+                    padding: 10px;
+                    border-radius: 5px;
+                    background-color: #0c66e4;
+                  }
+                  .card-create-btn:hover {
+                    background-color: #072754;
+                  }
+                  &-x {
+                    display: flex;
+                    align-items: center;
+                    background-color: #ededed;
+                    padding: 10px;
+                    border-radius: 5px;
+                    font-weight: 600;
+                  }
+                  .card-create-x:hover {
+                    background-color: #b6b2b2;
+                  }
+                }
+              }
+              .card-edit:hover {
+                border: 2px solid #fff;
+              }
+              .card-edit-save {
+                width: 100%;
                 color: #fff;
-                padding: 10px;
-                border-radius: 5px;
-                background-color: #0c66e4;
-              }
-              .card-create-btn:hover {
-                background-color: #072754;
-              }
-              &-x {
+                // position: absolute;
                 display: flex;
-                align-items: center;
-                background-color: #ededed;
-                padding: 10px;
-                border-radius: 5px;
-                font-weight: 600;
+                gap: 10px;
+                .card-edit-save-btn {
+                  cursor: pointer;
+                  z-index: 2;
+                  font-size: 14px;
+                  font-weight: 600;
+                  padding: 10px;
+                  border-radius: 5px;
+                  background-color: #0c66e4;
+                }
+                .card-edit-save-btn:hover {
+                  background-color: #072754;
+                }
+                .card-edit-save-x {
+                  color: #000;
+                  cursor: pointer;
+                  z-index: 2;
+                  font-size: 14px;
+                  font-weight: 600;
+                  padding: 10px;
+                  border-radius: 5px;
+                  // background-color: #ededed;
+                }
+                .card-edit-save-x:hover {
+                  background-color: #b5afaf;
+                }
               }
-              .card-create-x:hover {
-                background-color: #b6b2b2;
+            }
+
+            .card:hover {
+              border: 2px solid #000;
+              .card-delete {
+                display: flex;
               }
             }
-          }
-          .card-edit:hover {
-            border: 2px solid #fff;
-          }
-          .card-edit-save {
-            width: 100%;
-            color: #fff;
-            // position: absolute;
-            display: flex;
-            gap: 10px;
-            .card-edit-save-btn {
-              cursor: pointer;
-              z-index: 2;
-              font-size: 14px;
-              font-weight: 600;
-              padding: 10px;
-              border-radius: 5px;
-              background-color: #0c66e4;
+            .card-ghost {
+              transition: transform 0.18s ease;
+              transform: rotateZ(5deg);
             }
-            .card-edit-save-btn:hover {
-              background-color: #072754;
-            }
-            .card-edit-save-x {
-              color: #000;
-              cursor: pointer;
-              z-index: 2;
-              font-size: 14px;
-              font-weight: 600;
-              padding: 10px;
-              border-radius: 5px;
-              // background-color: #ededed;
-            }
-            .card-edit-save-x:hover {
-              background-color: #b5afaf;
-            }
-          }
-        }
 
-        .card:hover {
-          border: 2px solid #000;
-          .card-delete {
-            display: flex;
+            .card-ghost-drop {
+              transition: transform 0.18s ease-in-out;
+              transform: rotateZ(0deg);
+            }
+            .card-drop-preview {
+              background-color: rgba(150, 150, 200, 0.1);
+              border: 1px dashed #abc;
+              margin: 5px;
+            }
           }
         }
-        .card-ghost {
-          transition: transform 0.18s ease;
-          transform: rotateZ(5deg);
+        .column:first-child {
+          margin-left: 12px;
         }
-
-        .card-ghost-drop {
-          transition: transform 0.18s ease-in-out;
-          transform: rotateZ(0deg);
-        }
-        .card-drop-preview {
+        .cards-drop-preview {
           background-color: rgba(150, 150, 200, 0.1);
           border: 1px dashed #abc;
-          margin: 5px;
+          margin: 5px 45px 5px 5px;
         }
-      }
-    }
-    .column:first-child {
-      margin-left: 12px;
-    }
-    .cards-drop-preview {
-      background-color: rgba(150, 150, 200, 0.1);
-      border: 1px dashed #abc;
-      margin: 5px 45px 5px 5px;
-    }
-    .column-drag-handle {
-      cursor: move;
-      padding: 5px;
-    }
-    .column:hover {
-      header {
-        .column-drag-handle-delete {
-          opacity: 1;
+        .column-drag-handle {
+          cursor: move;
+          padding: 5px;
+        }
+        .column:hover {
+          header {
+            .column-drag-handle-delete {
+              opacity: 1;
+            }
+          }
         }
       }
     }

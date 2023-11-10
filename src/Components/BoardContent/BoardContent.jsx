@@ -60,61 +60,62 @@ function BoardContent(props) {
   }, []);
 
   return (
-    <div className="board-columns">
-      <Container
-        orientation="horizontal"
-        onDrop={onColumnDrop}
-        getChildPayload={(index) => columns[index]}
-        dragHandleSelector=".column-drag-handle"
-        dropPlaceholder={{
-          animationDuration: 150,
-          showOnTop: true,
-          className: "cards-drop-preview",
-        }}
-      >
-        {columns &&
-          columns.length > 0 &&
-          columns.map((column, index) => {
-            return (
-              <Draggable key={column.id}>
-                <Column
-                  setModal={setModal}
-                  columnProps={column}
-                  listColumns={listColumns}
-                  setColumns={setColumns}
-                />
-              </Draggable>
-            );
-          })}
-      </Container>
-
-      {createColumn ? (
-        <div className="column-create">
-          <header className="column-drag-handle"></header>
-          <div className="column-input">
-            <AddColumn
-              handleAddColumn={handleAddColumn}
-              setCreateColumn={setCreateColumn}
-            />
+    <>
+      <div className="board-columns">
+        <Container
+          orientation="horizontal"
+          onDrop={onColumnDrop}
+          getChildPayload={(index) => columns[index]}
+          dragHandleSelector=".column-drag-handle"
+          dropPlaceholder={{
+            animationDuration: 150,
+            showOnTop: true,
+            className: "cards-drop-preview",
+          }}
+        >
+          {columns &&
+            columns.length > 0 &&
+            columns.map((column, index) => {
+              return (
+                <Draggable key={column.id}>
+                  <Column
+                    setModal={setModal}
+                    columnProps={column}
+                    listColumns={listColumns}
+                    setColumns={setColumns}
+                  />
+                </Draggable>
+              );
+            })}
+        </Container>
+        {createColumn ? (
+          <div className="column-create">
+            <header className="column-drag-handle"></header>
+            <div className="column-input">
+              <AddColumn
+                handleAddColumn={handleAddColumn}
+                setCreateColumn={setCreateColumn}
+              />
+            </div>
+            <div className="add-column"></div>
           </div>
-          <div className="add-column"></div>
-        </div>
-      ) : (
-        <div className="column-create">
-          <header className="column-drag-handle"></header>
-          <div className="column-input"></div>
-          <div className="add-column">
-            <div
-              className="add-card add-column-btn"
-              onClick={() => setCreateColumn(true)}
-            >
-              <AiOutlinePlus />
-              Thêm danh sách khác
+        ) : (
+          <div className="column-create">
+            <header className="column-drag-handle"></header>
+            <div className="column-input"></div>
+            <div className="add-column">
+              <div
+                className="add-card add-column-btn"
+                onClick={() => setCreateColumn(true)}
+              >
+                <AiOutlinePlus />
+                Thêm danh sách khác
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 }
 

@@ -8,6 +8,7 @@ function AddCard(props) {
   const handleKeyPress = (e) => {
     let key = e.keyCode || e.which;
     if (key === 13) {
+      e.preventDefault();
       addCard();
     }
   };
@@ -35,7 +36,7 @@ function AddCard(props) {
             rows="3"
             cols="10"
             onChange={(e) => setValue(e.target.value)}
-            onKeyUp={(e) => handleKeyPress(e)}
+            onKeyDown={(e) => handleKeyPress(e)}
           ></textarea>
         </div>
         <div className="card-edit-save">

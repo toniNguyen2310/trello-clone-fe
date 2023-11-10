@@ -3,7 +3,7 @@ import { Container, Draggable } from "react-smooth-dnd";
 import Card from "./Card";
 
 function ListCard(props) {
-  const { cards, onCardDrop, column } = props;
+  const { cards, onCardDrop, column, setCards, listColumns } = props;
 
   return (
     <Container
@@ -23,7 +23,7 @@ function ListCard(props) {
         cards.map((card, index) => {
           return (
             <Draggable key={card.id}>
-              <Card card={card} />
+              <Card setCards={setCards} card={card} listColumns={listColumns} />
             </Draggable>
           );
         })}
