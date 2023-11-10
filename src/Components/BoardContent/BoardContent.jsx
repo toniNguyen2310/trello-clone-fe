@@ -62,7 +62,7 @@ function BoardContent(props) {
   return (
     <>
       <div className="board-columns">
-        <Container
+        {/* <Container
           orientation="horizontal"
           onDrop={onColumnDrop}
           getChildPayload={(index) => columns[index]}
@@ -72,22 +72,22 @@ function BoardContent(props) {
             showOnTop: true,
             className: "cards-drop-preview",
           }}
-        >
-          {columns &&
-            columns.length > 0 &&
-            columns.map((column, index) => {
-              return (
-                <Draggable key={column.id}>
-                  <Column
-                    setModal={setModal}
-                    columnProps={column}
-                    listColumns={listColumns}
-                    setColumns={setColumns}
-                  />
-                </Draggable>
-              );
-            })}
-        </Container>
+        > */}
+        {columns &&
+          columns.length > 0 &&
+          columns.map((column, index) => {
+            return (
+              // <Draggable key={column.id}>
+              <Column
+                setModal={setModal}
+                columnProps={column}
+                listColumns={listColumns}
+                setColumns={setColumns}
+              />
+              // </Draggable>
+            );
+          })}
+        {/* </Container> */}
         {createColumn ? (
           <div className="column-create">
             <header className="column-drag-handle"></header>

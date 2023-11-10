@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import HeaderTop from "./Components/HeaderTop/HeaderTop";
 import HeaderBoard from "./Components/HeaderBoard/HeaderBoard";
 import BoardContent from "./Components/BoardContent/BoardContent";
