@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Container, Draggable } from "react-smooth-dnd";
 import Column from "../Column/Column";
+import { Container, Draggable } from "react-smooth-dnd";
 import { initData } from "../../Utilities/InitData";
 import { softOrder } from "../../Utilities/softColumn";
 import { applyDrag } from "../../Utilities/dragDrop";

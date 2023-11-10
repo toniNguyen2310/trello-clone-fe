@@ -1,0 +1,139 @@
+.login-page {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 100vh;
+
+  &-form {
+    border: 1px solid #072754;
+    width: 550px;
+    padding-top: 10px;
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    position: relative;
+    box-sizing: border-box;
+
+    &-lorup {
+      width: 100%;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      font-size: 28px;
+
+      a {
+        font-size: 28px;
+        text-decoration: none;
+        color: #072754;
+        font-weight: 600;
+      }
+      a:last-child {
+        color: #d2d0cf;
+      }
+    }
+
+    &-container {
+      width: 100%;
+      box-sizing: border-box;
+      &-input {
+        display: flex;
+        flex-direction: column;
+        color: #333;
+        width: 100%;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+        label {
+          font-weight: bold;
+        }
+
+        input {
+          font-size: 16px;
+          margin-top: 10px;
+          height: 40px;
+          border-radius: 5px;
+          color: #333;
+          padding-left: 20px;
+          border: 2px solid #ededed;
+          background-color: #ededed;
+        }
+        input:placeholder-shown {
+          font-style: italic;
+        }
+        input:focus {
+          color: #495057;
+          background-color: #fff;
+          border-color: #072754;
+          outline: 0;
+          //   box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.3);
+        }
+      }
+      .input-password {
+        position: relative;
+        svg {
+          font-size: 20px;
+          position: absolute;
+          top: 42px;
+          right: 10px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    &-footer {
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &-misspass {
+        text-decoration: none;
+        color: #3393f6;
+        margin-bottom: 10px;
+      }
+      &-btn {
+        width: 100%;
+        height: 40px;
+        background-color: #072754;
+        color: white;
+        border-color: #072754;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.6s all;
+        margin-bottom: 10px;
+      }
+
+      &-btn:hover {
+        background-color: #0e4ba2;
+        color: #ffffff !important;
+      }
+      p {
+        a {
+          text-decoration: none;
+          color: #3393f6;
+        }
+      }
+    }
+
+    &-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 22px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+}

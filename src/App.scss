@@ -21,6 +21,12 @@ body {
     rgba(149, 39, 155, 1) 79%,
     rgba(218, 85, 172, 1) 100%
   );
+
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
 }
 
 .trello-master {
@@ -65,6 +71,7 @@ body {
         display: flex;
         align-items: center;
         justify-content: center;
+        text-decoration: none;
         gap: 6px;
         color: #f8eded;
         font-size: 16px;
@@ -104,7 +111,7 @@ body {
           width: 300px;
           border-radius: $column-border-radius;
           flex: 0 0 auto;
-
+          margin-right: 20px;
           > * {
             color: #000;
             padding: 0 8px;
@@ -344,23 +351,24 @@ body {
               margin: 5px;
             }
           }
-        }
-        .column:first-child {
-          margin-left: 12px;
-        }
-        .cards-drop-preview {
-          background-color: rgba(150, 150, 200, 0.1);
-          border: 1px dashed #abc;
-          margin: 5px 45px 5px 5px;
-        }
-        .column-drag-handle {
-          cursor: move;
-          padding: 5px;
-        }
-        .column:hover {
-          header {
-            .column-drag-handle-delete {
-              opacity: 1;
+          // }
+          .column:first-child {
+            margin-left: 12px;
+          }
+          .cards-drop-preview {
+            background-color: rgba(150, 150, 200, 0.1);
+            border: 1px dashed #abc;
+            margin: 5px 45px 5px 5px;
+          }
+          .column-drag-handle {
+            cursor: move;
+            padding: 5px;
+          }
+          .column:hover {
+            header {
+              .column-drag-handle-delete {
+                opacity: 1;
+              }
             }
           }
         }
@@ -375,5 +383,17 @@ body {
     height: 100%;
     background-color: rgb(0, 0, 0); /* Fallback color */
     background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  }
+}
+
+//TEST
+.list-test {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  .column-test {
+    background-color: #ededed;
+    width: 300px;
+    gap: 20px;
   }
 }
