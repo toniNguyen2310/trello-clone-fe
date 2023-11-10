@@ -1,5 +1,5 @@
 import React from "react";
-// import { Container, Draggable } from "react-smooth-dnd";
+
 import Card from "./Card";
 
 function ListCard(props) {
