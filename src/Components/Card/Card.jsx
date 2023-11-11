@@ -52,28 +52,37 @@ function Card(props) {
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
   };
 
+  window.addEventListener("click", function (event) {
+    if (
+      !event.target.closest(`#card-${card.id}`) &&
+      !event.target.closest(`#editCard-${card.id}`)
+    ) {
+      setIsEditCard(false);
+    } else {
+      setIsEditCard(true);
+    }
+  });
+
   return (
     <>
-      <>
-        {isEditCard ? (
-          <>
-            <EditCard
-              handleEditSigleCard={handleEditSigleCard}
-              setCards={setCards}
-              card={card}
-            />
-          </>
-        ) : (
-          <div className="card">
-            <span className="card-content" onClick={openEditSigleCard}>
-              {card.title}
-            </span>
-            <div className="card-delete" onClick={handleDeleteCard}>
-              <BsTrash />
-            </div>
+      {isEditCard ? (
+        <>
+          <EditCard
+            handleEditSigleCard={handleEditSigleCard}
+            setCards={setCards}
+            card={card}
+          />
+        </>
+      ) : (
+        <div className="card" id={`card-${card.id}`}>
+          <span className="card-content" onClick={openEditSigleCard}>
+            {card.title}
+          </span>
+          <div className="card-delete" onClick={handleDeleteCard}>
+            <BsTrash />
           </div>
-        )}
-      </>
+        </div>
+      )}
     </>
   );
 }

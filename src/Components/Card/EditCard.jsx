@@ -27,7 +27,7 @@ function EditCard(props) {
   }, []);
 
   return (
-    <div className="cover-edit-cart">
+    <div className="cover-edit-cart" id={`editCard-${card.id}`}>
       <div className="card card-edit">
         <textarea
           ref={editRef}

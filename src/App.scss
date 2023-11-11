@@ -64,6 +64,7 @@ body {
         }
       }
       .account {
+        position: relative;
         margin-right: 40px;
         padding: 5px 10px;
         border-radius: 5px;
@@ -76,6 +77,34 @@ body {
         color: #f8eded;
         font-size: 16px;
         cursor: pointer;
+        .drop-down {
+          position: absolute;
+          top: 120%;
+          right: 0;
+          background-color: #fff;
+          color: #000;
+          min-width: 150px;
+          width: 100%;
+          border-radius: 3px;
+          font-size: 14px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          box-sizing: border-box;
+          .drop-down-box {
+            border-radius: 4px;
+            width: 100%;
+            padding: 5px;
+            padding-left: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-sizing: border-box;
+          }
+          .drop-down-box:hover {
+            background-color: #ededed;
+          }
+        }
       }
       .account:hover {
         color: #fff;
@@ -96,7 +125,6 @@ body {
     }
   }
   .board-columns {
-    z-index: 2;
     overflow-y: hidden;
     margin-top: 10px;
     display: flex;
@@ -197,7 +225,6 @@ body {
         }
       }
       .list-card {
-        z-index: 1;
         padding-top: 5px;
         font-size: 15px;
         background-color: #ededed;
@@ -224,7 +251,7 @@ body {
           }
 
           .card-delete {
-            z-index: 2;
+            z-index: 1;
             position: absolute;
             padding: 5px;
             display: none;
@@ -261,6 +288,7 @@ body {
             // display: none;
             position: relative;
             z-index: 2;
+
             // border: 2px solid #000;
             padding: 5px;
 
@@ -304,7 +332,7 @@ body {
             gap: 10px;
             .card-edit-save-btn {
               cursor: pointer;
-              z-index: 2;
+              z-index: 4;
               font-size: 14px;
               font-weight: 600;
               padding: 10px;
@@ -383,17 +411,5 @@ body {
     height: 100%;
     background-color: rgb(0, 0, 0); /* Fallback color */
     background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-  }
-}
-
-//TEST
-.list-test {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  .column-test {
-    background-color: #ededed;
-    width: 300px;
-    gap: 20px;
   }
 }

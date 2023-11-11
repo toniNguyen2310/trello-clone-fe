@@ -2,33 +2,81 @@ import React, { useEffect, useRef, useState } from "react";
 import HeaderTop from "./Components/HeaderTop/HeaderTop";
 import HeaderBoard from "./Components/HeaderBoard/HeaderBoard";
 import BoardContent from "./Components/BoardContent/BoardContent";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
+import { Layout } from "./Components/Layout/Layout";
+import NotFound from "./Components/NotFound/NotFound";
+import "./App.scss";
+import { callFetchAccount } from "./Service/service";
 
 function App() {
   const [modal, setModal] = useState(false);
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: (
+        <>
+          <Layout />
+        </>
+      ),
+      errorElement: <NotFound />,
+      children: [
+        {
+          index: true,
+          element: (
+            <>
+              <HeaderTop />
+              <HeaderBoard />
+              <BoardContent setModal={setModal} />
+            </>
+          ),
+        },
 
+        {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/register",
+          element: <Register />,
+        },
+      ],
+    },
+  ]);
+
+  useEffect(() => {
+    const getAccount = async () => {
+      if (
+        window.location.pathname === "/login" ||
+        window.location.pathname === "/register"
+      ) {
+        return;
+      }
+      const res = await callFetchAccount();
+
+      if (res && res.data) {
+        const dataUser = {
+          id: res.data.user._id,
+          username: res.data.user.username,
+          email: res.data.user.email,
+        };
+        if (JSON.stringify(dataUser) === localStorage.getItem("user")) {
+          return;
+        } else {
+          localStorage.setItem("user", JSON.stringify(dataUser));
+        }
+      } else {
+        return;
+      }
+    };
+    getAccount();
+  });
   return (
-    <Router>
-      <div className="trello-master">
-        <Switch>
-          <Route exact path="/">
-            <HeaderTop />
-            <HeaderBoard />
-            <BoardContent setModal={setModal} />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-        </Switch>
-
-        {/* {modal && <div className="modal" id="modal"></div>} */}
-      </div>
-    </Router>
+    <div className="trello-master">
+      <RouterProvider router={router} />
+      {modal && <div className="modal" id="modal"></div>}
+    </div>
   );
 }
 

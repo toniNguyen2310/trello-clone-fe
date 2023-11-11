@@ -30,7 +30,7 @@ function AddColumn(props) {
   }, []);
   return (
     <>
-      <div className="cover-edit-cart">
+      <div className="cover-edit-cart" id="newColumn">
         <div className="card card-edit">
           <textarea
             onKeyDown={(e) => handleKeyPress(e)}

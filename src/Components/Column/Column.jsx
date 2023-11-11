@@ -7,7 +7,7 @@ import ListCard from "../Card/ListCard";
 import { applyDrag } from "../../Utilities/dragDrop";
 import { BsTrash } from "react-icons/bs";
 function Column(props) {
-  const { setModal, columnProps, listColumns, setColumns } = props;
+  const { columnProps, listColumns, setColumns } = props;
   const [isEditTitle, setIsEditTitle] = useState(false);
   const [showAddCard, setShowAddCard] = useState(false);
   const [titleColumn, setTitleColumn] = useState("");

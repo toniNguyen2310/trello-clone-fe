@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./register.scss";
-import { Link, NavLink } from "react-router-dom/cjs/react-router-dom.min";
+import { NavLink } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineClose } from "react-icons/ai";
 import { message, notification } from "antd";
 import LoadingButton from "../Variable/Variable";
+import { useNavigate } from "react-router-dom";
+import { callRegister } from "../../Service/service";
 
 function Register(props) {
+  const navigate = useNavigate();
   const [isShowPass, setIsShowPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const refInput = useRef(null);
@@ -20,7 +23,7 @@ function Register(props) {
     }
   };
 
-  //Validate email
+  //Validate fields
   const validateEmail = (value) => {
     const regexEmail =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -28,17 +31,12 @@ function Register(props) {
     return isValid;
   };
 
-  const validatePassword = (value) => {
-    const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
-    let isValid = regexPassword.test(value);
-    return isValid;
-  };
   //HANDLE REGISTER
   let isDuplicate = false;
   const handleRegister = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+    //VALIDATE
     if (!email || !username || !password) {
       message.error("Thông tin không được để trống");
       setIsLoading(false);
@@ -49,15 +47,35 @@ function Register(props) {
       setIsLoading(false);
       return;
     }
-
     if (password.length < 6) {
       message.error("Mật khẩu cần tối thiểu 6 ký tự");
       setIsLoading(false);
-
       return;
     }
-    message.success("Đăng nhập thành công");
-    return;
+
+    //CALL API
+    const res = await callRegister(
+      email.toLowerCase().trim(),
+      username.trim(),
+      password.trim()
+    );
+
+    if (res?.data?._id && !isDuplicate) {
+      console.log("res>>> ", res?.data);
+      setIsLoading(false);
+      message.success("Đăng ký tài khoản thành công");
+      navigate("/login");
+      isDuplicate = true;
+    } else {
+      setIsLoading(false);
+      message.error("Email đã tồn tại hãy thử lại");
+      return;
+    }
+    refInput.current.focus();
+    setIsShowPass(false);
+    setEmail("");
+    setUserName("");
+    setPassword("");
   };
 
   useEffect(() => {

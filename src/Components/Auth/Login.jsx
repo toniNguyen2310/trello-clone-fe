@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./login.scss";
-import { message, notification } from "antd";
+import { message } from "antd";
 
-import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineClose } from "react-icons/ai";
 import LoadingButton from "../Variable/Variable";
+import { callLogin } from "../../Service/service";
 function Login(props) {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +22,7 @@ function Login(props) {
     }
   };
 
-  // let isDuplicate = false;
+  let isDuplicate = false;
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -30,9 +32,30 @@ function Login(props) {
       setIsLoading(false);
       return;
     }
-    console.log("user>>> ", email.trim(), password.trim());
-    message.success("Đăng nhập thành công");
-    return;
+    const res = await callLogin(email.trim(), password.trim());
+    console.log("res>>>", res);
+    if (res?.data?.userWP && !isDuplicate) {
+      localStorage.setItem("access_token", res.data.accessToken);
+      localStorage.setItem("refresh_token", res.data.refreshToken);
+      console.log(res.data.userWP);
+      const dataUser = {
+        id: res.data.userWP._id,
+        username: res.data.userWP.username,
+        email: res.data.userWP.email,
+      };
+      localStorage.setItem("user", JSON.stringify(dataUser));
+      isDuplicate = true;
+      message.success("Đăng nhập thành công");
+      navigate("/");
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+      message.error("Thông tin đăng nhập không đúng");
+      return;
+    }
+    setEmail("");
+    setPassword("");
+    setIsShowPass("");
   };
 
   useEffect(() => {

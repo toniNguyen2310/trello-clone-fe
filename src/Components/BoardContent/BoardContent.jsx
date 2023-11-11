@@ -8,7 +8,6 @@ import AddCard from "../Column/AddCard";
 import "./BoardContent.scss";
 import AddColumn from "../Column/AddColumn";
 function BoardContent(props) {
-  const { setModal } = props;
   const listColumns = useRef([]);
   const [board, setBoard] = useState({});
   const [columns, setColumns] = useState([]);
@@ -41,6 +40,18 @@ function BoardContent(props) {
     listColumns.current.columnOrder.push(newColumn.id);
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
   };
+
+  //
+  window.addEventListener("click", function (event) {
+    if (
+      !event.target.closest(`#newColumn`) &&
+      !event.target.closest(`#newColumn-btn`)
+    ) {
+      setCreateColumn(false);
+    } else {
+      setCreateColumn(true);
+    }
+  });
 
   //RENDER LIST BOARD
   useEffect(() => {
@@ -78,7 +89,6 @@ function BoardContent(props) {
             return (
               // <Draggable key={column.id}>
               <Column
-                setModal={setModal}
                 columnProps={column}
                 listColumns={listColumns}
                 setColumns={setColumns}
@@ -104,6 +114,7 @@ function BoardContent(props) {
             <div className="column-input"></div>
             <div className="add-column">
               <div
+                id="newColumn-btn"
                 className="add-card add-column-btn"
                 onClick={() => setCreateColumn(true)}
               >
