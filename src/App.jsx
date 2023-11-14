@@ -9,9 +9,11 @@ import { Layout } from "./Components/Layout/Layout";
 import NotFound from "./Components/NotFound/NotFound";
 import "./App.scss";
 import { callFetchAccount } from "./Service/service";
+import Loading from "./Components/NotFound/Loading";
 
 function App() {
   const [modal, setModal] = useState(false);
+  const [spinning, setSpinning] = useState(false);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -26,9 +28,10 @@ function App() {
           index: true,
           element: (
             <>
-              <HeaderTop />
+              <HeaderTop setSpinning={setSpinning} />
               <HeaderBoard />
               <BoardContent setModal={setModal} />
+              <Loading spinning={spinning} />
             </>
           ),
         },
@@ -71,7 +74,7 @@ function App() {
       }
     };
     getAccount();
-  });
+  }, []);
   return (
     <div className="trello-master">
       <RouterProvider router={router} />

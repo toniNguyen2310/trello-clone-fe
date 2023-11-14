@@ -7,6 +7,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import AddCard from "../Column/AddCard";
 import "./BoardContent.scss";
 import AddColumn from "../Column/AddColumn";
+import Loading from "../NotFound/Loading";
 function BoardContent(props) {
   const listColumns = useRef([]);
   const [board, setBoard] = useState({});

@@ -8,21 +8,25 @@ import { callLogout } from "../../Service/service";
 import { message } from "antd";
 
 function HeaderTop(props) {
-  const navigate=useNavigate();
+  const { setSpinning } = props;
+  const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
   const [user, setUser] = useState("");
   //HANDLE LOGOUT
   const handleLogout = async () => {
+    setSpinning(true);
     const res = await callLogout();
     if (res && res.data) {
       message.success("Đăng Xuất thành công");
       localStorage.removeItem("user");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("access_token");
-      setUser("");
       navigate("/");
+      setSpinning(false);
+      setUser("");
       return;
     } else {
+      setSpinning(false);
       return;
     }
   };
