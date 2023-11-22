@@ -8,6 +8,7 @@ import {
   useSensors,
   MouseSensor,
   DragOverlay,
+  defaultDropAnimationSideEffects,
 } from "@dnd-kit/core";
 import "./boardContent.scss";
 import { arrayMove } from "@dnd-kit/sortable";
@@ -46,10 +47,22 @@ function BoardContent(props) {
     );
     setActiveDragItemData(event?.active?.data?.current);
   };
+
+  //HANDLE DRAG OVER
+  const handleDragOver = (event) => {
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) return;
+    const { active, over } = event;
+    if (!active || !over) return;
+  };
+
   //HANDLE DRAG END
   const handleDragEnd = (event) => {
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
+      console.log("Hành động kéo thả card- ko làm gì cả");
+      return;
+    }
     const { active, over } = event;
-    if (!over) return;
+    if (!active || !over) return;
     if (active.id != over.id) {
       const oldIndex = columns.findIndex((c) => c.id === active.id);
       const newIndex = columns.findIndex((c) => c.id === over.id);
@@ -62,9 +75,12 @@ function BoardContent(props) {
     setActiveDragItemType(null);
     setActiveDragItemData(null);
   };
-  console.log("activeDragItemId> ", activeDragItemId);
-  console.log("activeDragItemType> ", activeDragItemType);
-  console.log("activeDragItemData> ", activeDragItemData);
+
+  const customDropAnimation = {
+    sideEffects: defaultDropAnimationSideEffects({
+      styles: { active: { opacity: "0.5" } },
+    }),
+  };
 
   //RENDER LIST BOARD
   useEffect(() => {
@@ -88,6 +104,7 @@ function BoardContent(props) {
         autoScroll={false}
         sensors={sensors}
         onDragEnd={handleDragEnd}
+        onDragOver={handleDragOver}
         onDragStart={handleDragStart}
       >
         <Box
@@ -104,10 +121,13 @@ function BoardContent(props) {
           }}
         >
           <ListColumns columns={columns} />
-          <DragOverlay>
+          <DragOverlay dropAnimation={customDropAnimation}>
             {!activeDragItemType && null}
             {activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
               <Column2 column={activeDragItemData} />
+            )}
+            {activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
+              <Card2 card={activeDragItemData} />
             )}
           </DragOverlay>
         </Box>
