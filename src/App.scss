@@ -12,7 +12,7 @@ body {
   -webkit-font-smoothing: antialiased;
   line-height: 1.3em;
   font-size: 14px;
-  background: rgb(24, 52, 111);
+  // background: rgb(24, 52, 111);
   background: linear-gradient(
     141deg,
     rgba(24, 52, 111, 1) 0%,
@@ -125,16 +125,14 @@ body {
     }
   }
   .board-columns {
-    overflow-y: hidden;
-    margin-top: 10px;
+    // margin-top: 10px;
     display: flex;
-    overflow-x: auto;
-    gap: 12px;
+    overflow-x: scroll;
+    // gap: 12px;
+    overflow-y: hidden;
 
-    // .smooth-dnd-container {
-    // .smooth-dnd-draggable-wrapper {
     .column {
-      height: 580px;
+      // height: 580px;
       height: calc(100vh - 40px - 50px - 40px);
       width: 300px;
       border-radius: $column-border-radius;
@@ -400,8 +398,6 @@ body {
         }
       }
     }
-    // }
-    // }
   }
   .modal {
     display: block;

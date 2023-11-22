@@ -1,6 +1,14 @@
 export const initData = {
   id: "board-1",
-  columnOrder: ["column-3", "column-2", "column-1"],
+  columnOrder: [
+    "column-3",
+    "column-2",
+    "column-1",
+    "column-4",
+    "column-5",
+    "column-6",
+    "column-7",
+  ],
   columns: [
     {
       id: "column-1",
@@ -138,6 +146,68 @@ export const initData = {
           boardId: "board-1",
           columnId: "column-3",
           title: "Title card 10",
+        },
+      ],
+    },
+    {
+      id: "column-4",
+      boardId: "board-1",
+      title: "Todo 4",
+      cardOrder: ["card-11", "card-22"],
+      cards: [
+        {
+          id: "card-11",
+          boardId: "board-1",
+          columnId: "column-4",
+          title: "Title card 11",
+        },
+        {
+          id: "card-22",
+          boardId: "board-1",
+          columnId: "column-4",
+          title: "Title card 22",
+        },
+      ],
+    },
+    {
+      id: "column-6",
+      boardId: "board-1",
+      title: "Todo 6",
+      cardOrder: ["card-44"],
+      cards: [
+        {
+          id: "card-44",
+          boardId: "board-1",
+          columnId: "column-6",
+          title: "Title card 44",
+        },
+      ],
+    },
+    {
+      id: "column-7",
+      boardId: "board-1",
+      title: "Todo 7",
+      cardOrder: ["card-55"],
+      cards: [
+        {
+          id: "card-55",
+          boardId: "board-1",
+          columnId: "column-7",
+          title: "Title card 55",
+        },
+      ],
+    },
+    {
+      id: "column-5",
+      boardId: "board-1",
+      title: "Todo 5",
+      cardOrder: ["card-33"],
+      cards: [
+        {
+          id: "card-33",
+          boardId: "board-1",
+          columnId: "column-5",
+          title: "Title card 33",
         },
       ],
     },

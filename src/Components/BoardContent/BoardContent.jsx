@@ -5,6 +5,20 @@ import { softOrder } from "../../Utilities/softColumn";
 import { applyDrag } from "../../Utilities/dragDrop";
 import { AiOutlinePlus } from "react-icons/ai";
 import AddCard from "../Column/AddCard";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  horizontalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import "./BoardContent.scss";
 import AddColumn from "../Column/AddColumn";
 import Loading from "../NotFound/Loading";
@@ -13,6 +27,14 @@ function BoardContent(props) {
   const [board, setBoard] = useState({});
   const [columns, setColumns] = useState([]);
   const [createColumn, setCreateColumn] = useState(false);
+
+  const pointerSensor = useSensor(PointerSensor, {
+    // Require the mouse to move by 10 pixels before activating
+    activationConstraint: {
+      distance: 10,
+    },
+  });
+  const sensors = useSensors(pointerSensor);
 
   //HANDLE DROP COLUMN
   const onColumnDrop = (dropResult) => {
@@ -40,6 +62,23 @@ function BoardContent(props) {
     listColumns.current.columns.push(newColumn);
     listColumns.current.columnOrder.push(newColumn.id);
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
+  };
+
+  //HANDLE DRAG END
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (!over) return;
+    if (active.id != over.id) {
+      console.log("keo tha");
+      const oldIndex = columns.findIndex((c) => c.id === active.id);
+      const newIndex = columns.findIndex((c) => c.id === over.id);
+      // console.log(oldIndex, "->", newIndex);
+      const newColumn = arrayMove(columns, oldIndex, newIndex);
+      const newColumnOrder = newColumn.map((e) => e.id);
+      console.log("newColumn>> ", newColumn);
+      setColumns(newColumn);
+      console.log("newColumnOrder>> ", newColumnOrder);
+    }
   };
 
   //
@@ -73,31 +112,26 @@ function BoardContent(props) {
   return (
     <>
       <div className="board-columns">
-        {/* <Container
-          orientation="horizontal"
-          onDrop={onColumnDrop}
-          getChildPayload={(index) => columns[index]}
-          dragHandleSelector=".column-drag-handle"
-          dropPlaceholder={{
-            animationDuration: 150,
-            showOnTop: true,
-            className: "cards-drop-preview",
-          }}
-        > */}
-        {columns &&
-          columns.length > 0 &&
-          columns.map((column, index) => {
-            return (
-              // <Draggable key={column.id}>
-              <Column
-                columnProps={column}
-                listColumns={listColumns}
-                setColumns={setColumns}
-              />
-              // </Draggable>
-            );
-          })}
-        {/* </Container> */}
+        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+          <SortableContext
+            strategy={horizontalListSortingStrategy}
+            items={columns?.map((e) => e.id)}
+          >
+            {columns &&
+              columns.length > 0 &&
+              columns.map((column, index) => {
+                return (
+                  <Column
+                    key={column.id}
+                    columnProps={column}
+                    listColumns={listColumns}
+                    setColumns={setColumns}
+                  />
+                );
+              })}
+          </SortableContext>
+        </DndContext>
+
         {createColumn ? (
           <div className="column-create">
             <header className="column-drag-handle"></header>

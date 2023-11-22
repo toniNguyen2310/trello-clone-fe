@@ -6,6 +6,8 @@ import { softOrder } from "../../Utilities/softColumn";
 import ListCard from "../Card/ListCard";
 import { applyDrag } from "../../Utilities/dragDrop";
 import { BsTrash } from "react-icons/bs";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 function Column(props) {
   const { columnProps, listColumns, setColumns } = props;
   const [isEditTitle, setIsEditTitle] = useState(false);
@@ -15,6 +17,14 @@ function Column(props) {
   const [cards, setCards] = useState(
     softOrder(columnProps.cards, columnProps.cardOrder, "id")
   );
+
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: column.id });
+
+  const styleColumn = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   //ENTER TO SUBMIT
   const handleKeyPress = (e) => {
@@ -98,62 +108,68 @@ function Column(props) {
   }, []);
 
   return (
-    <>
-      <div className="column">
-        {isEditTitle ? (
-          <header className="column-drag-handle">
-            <div className="edit-title-column">
-              <input
-                value={titleColumn}
-                type="text"
-                onKeyDown={(e) => handleKeyPress(e)}
-                onChange={(e) => setTitleColumn(e.target.value)}
-              />
-            </div>
-          </header>
-        ) : (
-          <header className="column-drag-handle">
-            <div
-              className="column-drag-title"
-              onClick={() => setIsEditTitle(true)}
-            >
-              {column.title}
-            </div>
-            <div
-              className="column-drag-handle-delete"
-              onClick={handleDeleteColumn}
-            >
-              <BsTrash />
-            </div>
-          </header>
-        )}
-
-        <div className="list-card">
-          <ListCard
-            onCardDrop={onCardDrop}
-            cards={cards}
-            setCards={setCards}
-            listColumns={listColumns}
-            column={column}
-          />
-          {showAddCard && (
-            <AddCard
-              setCards={setCards}
-              handleAddCard={handleAddCard}
-              setShowAddCard={setShowAddCard}
+    // <>
+    <div
+      className="column"
+      ref={setNodeRef}
+      style={styleColumn}
+      {...attributes}
+      {...listeners}
+    >
+      {isEditTitle ? (
+        <header className="column-drag-handle">
+          <div className="edit-title-column">
+            <input
+              value={titleColumn}
+              type="text"
+              onKeyDown={(e) => handleKeyPress(e)}
+              onChange={(e) => setTitleColumn(e.target.value)}
             />
-          )}
-        </div>
-        <footer>
-          {!showAddCard && (
-            <div className="add-card" onClick={() => setShowAddCard(true)}>
-              <AiOutlinePlus />
-              Thêm thẻ
-            </div>
-          )}
-        </footer>
+          </div>
+        </header>
+      ) : (
+        <header className="column-drag-handle">
+          <div
+            className="column-drag-title"
+            onClick={() => setIsEditTitle(true)}
+          >
+            {column.title}
+          </div>
+          <div
+            className="column-drag-handle-delete"
+            onClick={handleDeleteColumn}
+          >
+            <BsTrash />
+          </div>
+        </header>
+      )}
+
+      <div className="list-card">
+        <ListCard
+          onCardDrop={onCardDrop}
+          cards={cards}
+          setCards={setCards}
+          listColumns={listColumns}
+          column={column}
+        />
+        {showAddCard && (
+          <AddCard
+            setCards={setCards}
+            handleAddCard={handleAddCard}
+            setShowAddCard={setShowAddCard}
+          />
+        )}
       </div>
-    </>
+      <footer>
+        {!showAddCard && (
+          <div className="add-card" onClick={() => setShowAddCard(true)}>
+            <AiOutlinePlus />
+            Thêm thẻ
+          </div>
+        )}
+      </footer>
+    </div>
+    // </>
   );
 }
 
