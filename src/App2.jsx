@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./test.scss";
+import "./main.scss";
 import Container from "@mui/material/Container";
 import { useColorScheme } from "@mui/material/styles";
 import AppBar from "./Components2/AppBar";

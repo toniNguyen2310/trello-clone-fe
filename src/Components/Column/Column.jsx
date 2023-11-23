@@ -4,7 +4,7 @@ import AddCard from "./AddCard";
 import Card from "../Card/Card";
 import { softOrder } from "../../Utilities/softColumn";
 import ListCard from "../Card/ListCard";
-import { applyDrag } from "../../Utilities/dragDrop";
+import { applyDrag } from "../../Utilities/variable";
 import { BsTrash } from "react-icons/bs";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";

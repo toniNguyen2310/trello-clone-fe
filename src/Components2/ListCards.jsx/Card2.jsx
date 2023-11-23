@@ -28,8 +28,10 @@ function Card2(props) {
       key={card.id}
       sx={{
         cursor: "pointer",
-        backgroundColor: "#b1aeae",
+        backgroundColor: card?.FE_PlaceholerCard ? "#f1f2f4" : "#b1aeae",
         overflow: "unset",
+        boxShadow: card?.FE_PlaceholerCard & "unset",
+        // display: card?.FE_PlaceholerCard ? "none" : "block",
       }}
     >
       <CardContent sx={{ p: 1.5, "&:last-child": { p: 1.5 } }}>

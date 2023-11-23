@@ -15,3 +15,12 @@ export const applyDrag = (arr, dragResult) => {
 
   return result;
 };
+
+export const createPlaceHolderCard = (column) => {
+  return {
+    id: `${column.id}-placeholder-card`,
+    boardId: column.boardId,
+    columnId: column.id,
+    FE_PlaceholerCard: true,
+  };
+};

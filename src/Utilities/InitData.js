@@ -7,7 +7,7 @@ export const initData = {
     "column-4",
     "column-5",
     "column-6",
-    "column-7",
+    // "column-7",
   ],
   columns: [
     {
@@ -184,20 +184,6 @@ export const initData = {
       ],
     },
     {
-      id: "column-7",
-      boardId: "board-1",
-      title: "Todo 7",
-      cardOrder: ["card-55"],
-      cards: [
-        {
-          id: "card-55",
-          boardId: "board-1",
-          columnId: "column-7",
-          title: "Title card 55",
-        },
-      ],
-    },
-    {
       id: "column-5",
       boardId: "board-1",
       title: "Todo 5",
@@ -211,6 +197,19 @@ export const initData = {
         },
       ],
     },
+    // {
+    //   id: "column-7",
+    //   boardId: "board-1",
+    //   title: "Todo 7",
+    //   cardOrder: ["column-7-placeholder-card"],
+    //   cards: [
+    //     {
+    //       id: "column-7-placeholder-card",
+    //       boardId: "board-1",
+    //       columnId: "column-7",
+    //       FE_PlaceholerCard: true,
+    //     },
+    //   ],
+    // },
   ],
-  title: "",
 };

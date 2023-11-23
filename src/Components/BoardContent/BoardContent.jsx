@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Column from "../Column/Column";
 import { initData } from "../../Utilities/InitData";
 import { softOrder } from "../../Utilities/softColumn";
-import { applyDrag } from "../../Utilities/dragDrop";
+import { applyDrag } from "../../Utilities/variable";
 import { AiOutlinePlus } from "react-icons/ai";
 import AddCard from "../Column/AddCard";
 import {

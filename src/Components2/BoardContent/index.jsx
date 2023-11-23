@@ -16,7 +16,8 @@ import { arrayMove } from "@dnd-kit/sortable";
 import ListColumns from "../ListColumns";
 import Column2 from "../ListColumns/Column2";
 import Card2 from "../ListCards.jsx/Card2";
-import { cloneDeep } from "lodash";
+import { cloneDeep, isEmpty } from "lodash";
+import { createPlaceHolderCard } from "../../Utilities/variable";
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: "ACTIVE_DRAG_ITEM_TYPE_COLUMN",
@@ -56,7 +57,8 @@ function BoardContent(props) {
     over,
     activeColumn,
     activeDraggingCardId,
-    activeDraggingCardData
+    activeDraggingCardData,
+    dragEnd
   ) => {
     setColumns((prevColumns) => {
       const overCardIndex = overColumn?.cards?.findIndex(
@@ -85,6 +87,12 @@ function BoardContent(props) {
         nextActiveColumn.cards = nextActiveColumn.cards.filter(
           (card) => card.id !== activeDraggingCardId
         );
+
+        //filter placeholder when column empty
+        if (isEmpty(nextActiveColumn.cards)) {
+          nextActiveColumn.cards = [createPlaceHolderCard(nextActiveColumn)];
+        }
+
         nextActiveColumn.cardOrder = nextActiveColumn.cards.map(
           (card) => card.id
         );
@@ -104,11 +112,51 @@ function BoardContent(props) {
           0,
           rebuild_activeDraggingCardData
         );
+
+        nextOverColumn.cards = nextOverColumn.cards.filter(
+          (card) => !card.FE_PlaceholerCard
+        );
+
         nextOverColumn.cardOrder = nextOverColumn.cards.map((card) => card.id);
+      }
+      if (dragEnd) {
+        let test = JSON.parse(JSON.stringify(nextColumns));
+        listColumns.current.columns = customDataToSaveLS(
+          test,
+          nextOverColumn.id
+        );
+        localStorage.setItem(
+          "listColumns",
+          JSON.stringify(listColumns.current)
+        );
       }
 
       return nextColumns;
     });
+  };
+
+  //CUSTOME DATA TO SAVE
+  const customDataToSaveLS = (nextColumns, idEnd) => {
+    let indexEmpty = nextColumns.findIndex((e) => e.cards[0].FE_PlaceholerCard);
+    // let indexSortable = nextColumns.findIndex(
+    //   (e) => e.cards[0].FE_PlaceholerCard
+    // );
+    let indexEnd = nextColumns.findIndex((e) => e.id === idEnd);
+
+    let cardsWithoutSortable = nextColumns[indexEnd].cards.map((e) => {
+      if (e.sortable) {
+        delete e.sortable;
+      }
+      return e;
+    });
+
+    nextColumns[indexEnd].cards = cardsWithoutSortable;
+    //Khi có column rỗng
+    if (indexEmpty > -1) {
+      nextColumns[indexEmpty].cardOrder = [];
+      nextColumns[indexEmpty].cards = [];
+    }
+    return nextColumns;
   };
 
   //HANDLE DRAG START
@@ -142,6 +190,8 @@ function BoardContent(props) {
     if (!activeColumn || !overColumn) return;
 
     if (activeColumn.id !== overColumn.id) {
+      let dragEnd = false;
+
       moveCardBetweenDifferentColumns(
         overColumn,
         overCardId,
@@ -149,7 +199,8 @@ function BoardContent(props) {
         over,
         activeColumn,
         activeDraggingCardId,
-        activeDraggingCardData
+        activeDraggingCardData,
+        dragEnd
       );
     }
   };
@@ -172,6 +223,8 @@ function BoardContent(props) {
       if (!activeColumn || !overColumn) return;
 
       if (oldColumnWhenDraggingCard.id !== overColumn.id) {
+        //DIFFERNT COLUMN
+        let dragEnd = true;
         moveCardBetweenDifferentColumns(
           overColumn,
           overCardId,
@@ -179,9 +232,11 @@ function BoardContent(props) {
           over,
           activeColumn,
           activeDraggingCardId,
-          activeDraggingCardData
+          activeDraggingCardData,
+          dragEnd
         );
       } else {
+        //SAME COLUMN
         const oldCardIndex = oldColumnWhenDraggingCard?.cards?.findIndex(
           (c) => c.id === activeDragItemId
         );
@@ -201,7 +256,11 @@ function BoardContent(props) {
 
           targetColumn.cards = newOrderCards;
           targetColumn.cardOrder = newOrderCards.map((card) => card.id);
-
+          listColumns.current.columns = nextColumns;
+          localStorage.setItem(
+            "listColumns",
+            JSON.stringify(listColumns.current)
+          );
           return nextColumns;
         });
       }
@@ -214,8 +273,13 @@ function BoardContent(props) {
         const newIndex = columns.findIndex((c) => c.id === over.id);
         const newColumn = arrayMove(columns, oldIndex, newIndex);
         const newColumnOrder = newColumn.map((e) => e.id);
-
+        listColumns.current.columnOrder = newColumnOrder;
+        listColumns.current.columns = newColumn;
         setColumns(newColumn);
+        localStorage.setItem(
+          "listColumns",
+          JSON.stringify(listColumns.current)
+        );
       }
     }
 
@@ -242,6 +306,7 @@ function BoardContent(props) {
         "id"
       );
       setColumns(listColOrder);
+
       listColumns.current = boardInitData;
       localStorage.setItem("listColumns", JSON.stringify(boardInitData));
     }

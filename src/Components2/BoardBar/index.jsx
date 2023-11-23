@@ -5,6 +5,7 @@ function BoardBar(props) {
   return (
     <Box
       sx={{
+        pl: 2,
         backgroundColor: "green",
         width: "100%",
         height: (theme) => theme.trello.boardBarHeight,

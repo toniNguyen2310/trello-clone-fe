@@ -5,6 +5,7 @@ function AppBar(props) {
   return (
     <Box
       sx={{
+        pl: 2,
         backgroundColor: "red",
         width: "100%",
         height: (theme) => theme.trello.appBarHeight,
