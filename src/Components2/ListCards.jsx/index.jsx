@@ -10,6 +10,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import Card2 from "./Card2";
+import AddCard from "./AddCard";
 const COLUMN_HEADER_HEIGHT = "50px";
 const COLUMN_FOOTER_HEIGHT = "56px";
 
@@ -55,6 +56,7 @@ function ListCards(props) {
         {cards.map((card) => {
           return <Card2 key={card.id} card={card} />;
         })}
+        {/* <AddCard /> */}
       </Box>
     </SortableContext>
   );

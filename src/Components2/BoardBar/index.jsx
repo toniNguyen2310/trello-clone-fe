@@ -6,7 +6,7 @@ function BoardBar(props) {
     <Box
       sx={{
         pl: 2,
-        backgroundColor: "green",
+        backgroundColor: "#342d5e",
         width: "100%",
         height: (theme) => theme.trello.boardBarHeight,
         display: "flex",
@@ -14,9 +14,12 @@ function BoardBar(props) {
         justifyContent: "space-between",
         overflowX: "auto",
         borderTop: "1px solid #fff",
+        color: "#ffffff",
+        fontWeight: "bold",
+        fontSize: "18px",
       }}
     >
-      board bar
+      Board Name
     </Box>
   );
 }

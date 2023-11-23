@@ -30,3 +30,267 @@
     margin: 0;
   }
 }
+
+//APP BAR
+.appBar-logo {
+  // background-color: red;
+  width: 80px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+  .appBar-logo-img {
+    width: 100%;
+  }
+  .appBar-logo-img:hover {
+    // img {
+    content: url("https://trello.com/assets/87e1af770a49ce8e84e3.gif");
+    // }
+  }
+}
+
+//COLUMN
+.css-1hxx0bn {
+  padding: 5px 10px !important;
+}
+.header-column {
+  display: flex;
+  // background-color: blue;
+  width: 100%;
+  height: 100%;
+  // padding: 0 20px;
+  align-items: center;
+  box-sizing: border-box;
+  .title-column {
+    width: 90%;
+    // background-color: aliceblue;
+    font-weight: 600;
+    margin-left: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .delete-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    width: 10%;
+    // background-color: #ffffff;
+    font-size: 15px;
+    border-radius: 5px;
+  }
+  .delete-column:hover {
+    background-color: #d6d1d1;
+  }
+  .input-title-column {
+    width: 100%;
+    height: 90%;
+    // background-color: red;
+    display: flex;
+    // align-items: center;
+    // padding: 0 2px;
+
+    input {
+      width: 97%;
+      height: 100%;
+      border-radius: 10px;
+      padding-left: 20px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+        sans-serif;
+      // outline: none;
+      border: none;
+      line-height: 10px;
+      font-size: 15px;
+      resize: none;
+    }
+  }
+}
+
+//FOOTER COLUMN
+.css-in2rno {
+  padding: 10px;
+}
+.footer-column {
+  width: 100%;
+  // background-color: red;
+  // height: 100%;
+  display: flex;
+  align-items: center;
+
+  border-radius: 5px;
+  padding: 5px;
+  font-weight: 600;
+  color: #6f7b90;
+  svg {
+    margin-right: 5px;
+  }
+}
+.footer-column:hover {
+  background-color: #d6d1d1;
+}
+
+//ADD AND EDIT CARD
+.Add-edit-cart {
+  margin-bottom: 10px;
+  width: 100%;
+  // background-color: red;
+  .card-edit {
+    width: 100%;
+    // display: none;
+    position: relative;
+    z-index: 2;
+    // border: 2px solid #000;
+    // padding: 5px;
+    .texarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      line-height: 20px;
+      font-size: 15px;
+      resize: none;
+      border-radius: 10px;
+      padding-left: 10px;
+      padding-top: 10px;
+      box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
+    }
+  }
+
+  .card-edit-save {
+    width: 100%;
+    color: #fff;
+    // position: absolute;
+    display: flex;
+    gap: 10px;
+    .card-add-btn {
+      cursor: pointer;
+      z-index: 4;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #0c66e4;
+    }
+    .card-edit-save-btn {
+      cursor: pointer;
+      z-index: 4;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background-color: #0c66e4;
+    }
+    .card-add-btn:hover {
+      background-color: #072754;
+    }
+    .card-edit-save-btn:hover {
+      background-color: #072754;
+    }
+    .card-edit-save-x {
+      color: #000;
+      cursor: pointer;
+      z-index: 2;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      padding: 0 5px;
+      font-weight: 600;
+      // padding: 10px;
+      border-radius: 5px;
+      // background-color: red;
+    }
+    .card-edit-save-x:hover {
+      background-color: #b5afaf;
+    }
+  }
+}
+
+.column {
+  min-width: 300px;
+  max-width: 300px;
+  background-color: #f1f2f4;
+  margin-left: 20px;
+  height: fit-content;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  .card-edit {
+    width: 100%;
+    // display: none;
+    position: relative;
+    z-index: 2;
+    // border: 2px solid #000;
+    // padding: 5px;
+    .texarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      line-height: 20px;
+      font-size: 15px;
+      resize: none;
+      border-radius: 10px;
+      padding-left: 10px;
+      padding-top: 10px;
+      box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
+    }
+  }
+
+  .card-edit-save {
+    width: 100%;
+    color: #fff;
+    // position: absolute;
+    display: flex;
+    gap: 10px;
+    .card-add-btn {
+      cursor: pointer;
+      z-index: 4;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #0c66e4;
+    }
+    .card-edit-save-btn {
+      cursor: pointer;
+      z-index: 4;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background-color: #0c66e4;
+    }
+    .card-add-btn:hover {
+      background-color: #072754;
+    }
+    .card-edit-save-btn:hover {
+      background-color: #072754;
+    }
+    .card-edit-save-x {
+      color: #000;
+      cursor: pointer;
+      z-index: 2;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      padding: 0 5px;
+      font-weight: 600;
+      // padding: 10px;
+      border-radius: 5px;
+      // background-color: red;
+    }
+    .card-edit-save-x:hover {
+      background-color: #b5afaf;
+    }
+  }
+}
+.bg-836d9e {
+  background-color: #836d9e;
+  .btn-add-column {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+}

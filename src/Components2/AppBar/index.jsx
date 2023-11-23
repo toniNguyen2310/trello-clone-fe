@@ -6,7 +6,7 @@ function AppBar(props) {
     <Box
       sx={{
         pl: 2,
-        backgroundColor: "red",
+        backgroundColor: "#072754",
         width: "100%",
         height: (theme) => theme.trello.appBarHeight,
         display: "flex",
@@ -14,7 +14,13 @@ function AppBar(props) {
         justifyContent: "space-between",
       }}
     >
-      nav bar
+      <div className="appBar-logo">
+        <img
+          className="appBar-logo-img"
+          src="https://trello.com/assets/d947df93bc055849898e.gif"
+          alt=""
+        />
+      </div>
     </Box>
   );
 }

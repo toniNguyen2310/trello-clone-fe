@@ -3,8 +3,12 @@ import Box from "@mui/material/Box";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
 import ListCards from "../ListCards.jsx";
+import { BsTrash } from "react-icons/bs";
+import { AiOutlinePlus } from "react-icons/ai";
+import AddColumn from "./AddColumn.jsx";
+
 const COLUMN_HEADER_HEIGHT = "50px";
-const COLUMN_FOOTER_HEIGHT = "56px";
+const COLUMN_FOOTER_HEIGHT = "50px";
 
 function Column2(props) {
   const { column } = props;
@@ -32,7 +36,7 @@ function Column2(props) {
           maxWidth: "300px",
           backgroundColor: "#f1f2f4",
           ml: 2,
-          borderRadius: "6px",
+          borderRadius: "10px",
           height: "fit-content",
           boxSizing: "border-box",
           maxHeight: (theme) =>
@@ -45,23 +49,42 @@ function Column2(props) {
             height: COLUMN_HEADER_HEIGHT,
             display: "flex",
             p: 2,
+            // pl: 2,
+
             alignItems: "center",
             cursor: "pointer",
             // backgroundColor: "red",
           }}
         >
-          {column.title}
+          {/* {column.title} */}
+          <div className="header-column">
+            <div className="title-column"> {column.title}</div>
+            <div className="delete-column">
+              <BsTrash />
+            </div>
+          </div>
+          {/* <div className="header-column">
+            <div className="input-title-column">
+              <input type="text" />
+            </div>
+          </div> */}
         </Box>
         <ListCards cards={column.cards} />
         <Box
           sx={{
             height: COLUMN_FOOTER_HEIGHT,
-            p: 2,
+            p: 1,
             alignItems: "center",
             cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            fontSize: "16px",
           }}
         >
-          {column.title}
+          <div className="footer-column">
+            <AiOutlinePlus />
+            Thêm thẻ
+          </div>
         </Box>
       </Box>
 
