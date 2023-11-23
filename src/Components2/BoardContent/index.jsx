@@ -120,43 +120,44 @@ function BoardContent(props) {
         nextOverColumn.cardOrder = nextOverColumn.cards.map((card) => card.id);
       }
       if (dragEnd) {
-        let test = JSON.parse(JSON.stringify(nextColumns));
-        listColumns.current.columns = customDataToSaveLS(
-          test,
-          nextOverColumn.id
+        let customColumnToSaveLs = JSON.parse(JSON.stringify(nextColumns));
+        let indexEmpty = customColumnToSaveLs.findIndex(
+          (e) => e.cards[0].FE_PlaceholerCard
         );
+        // let indexSortable = nextColumns.findIndex(
+        //   (e) => e.cards[0].FE_PlaceholerCard
+        // );
+        let indexEnd = customColumnToSaveLs.findIndex(
+          (e) => e.id === nextOverColumn.id
+        );
+
+        let cardsWithoutSortable = customColumnToSaveLs[indexEnd].cards.map(
+          (e) => {
+            if (e.sortable) {
+              delete e.sortable;
+            }
+            return e;
+          }
+        );
+        console.log("cardsWithoutSortable>>>", cardsWithoutSortable);
+        customColumnToSaveLs[indexEnd].cards = cardsWithoutSortable;
+        //Khi có column rỗng
+        if (indexEmpty > -1) {
+          customColumnToSaveLs[indexEmpty].cardOrder = [];
+          customColumnToSaveLs[indexEmpty].cards = [];
+        }
+        console.log("customColumnToSaveLs>>>", customColumnToSaveLs);
+        listColumns.current.columns = customColumnToSaveLs;
         localStorage.setItem(
           "listColumns",
           JSON.stringify(listColumns.current)
         );
+
+        //CALL API HERE
       }
 
       return nextColumns;
     });
-  };
-
-  //CUSTOME DATA TO SAVE
-  const customDataToSaveLS = (nextColumns, idEnd) => {
-    let indexEmpty = nextColumns.findIndex((e) => e.cards[0].FE_PlaceholerCard);
-    // let indexSortable = nextColumns.findIndex(
-    //   (e) => e.cards[0].FE_PlaceholerCard
-    // );
-    let indexEnd = nextColumns.findIndex((e) => e.id === idEnd);
-
-    let cardsWithoutSortable = nextColumns[indexEnd].cards.map((e) => {
-      if (e.sortable) {
-        delete e.sortable;
-      }
-      return e;
-    });
-
-    nextColumns[indexEnd].cards = cardsWithoutSortable;
-    //Khi có column rỗng
-    if (indexEmpty > -1) {
-      nextColumns[indexEmpty].cardOrder = [];
-      nextColumns[indexEmpty].cards = [];
-    }
-    return nextColumns;
   };
 
   //HANDLE DRAG START
