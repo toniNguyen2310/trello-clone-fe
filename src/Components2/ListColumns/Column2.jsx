@@ -6,12 +6,16 @@ import ListCards from "../ListCards.jsx";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
 import AddColumn from "./AddColumn.jsx";
-
+import { message } from "antd";
 const COLUMN_HEADER_HEIGHT = "50px";
 const COLUMN_FOOTER_HEIGHT = "50px";
 
 function Column2(props) {
-  const { column } = props;
+  const { column, listColumns, setColumns, columns } = props;
+  const editTitleRef = useRef(null);
+  const [isAddCard, setIsAddCard] = useState(false);
+  const [isEditTitleColumn, setIsEditTitleColumn] = useState(false);
+  const [titleColumn, setTitleColumn] = useState(column?.title);
 
   const {
     attributes,
@@ -27,6 +31,42 @@ function Column2(props) {
     height: "100%",
     opacity: isDragging ? "0.5" : undefined,
   };
+
+  const handleKeyPress = (e) => {
+    let key = e.keyCode || e.which;
+    if (key === 13) {
+      e.preventDefault();
+      handleEditTitleColumn();
+    }
+  };
+
+  const handleEditTitleColumn = () => {
+    if (!titleColumn.trim()) {
+      message.error("Thông tin đang trống");
+      return;
+    }
+    let newColumn = column;
+    newColumn.title = titleColumn.trim();
+    localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
+    setIsEditTitleColumn(false);
+  };
+
+  //HANDLE DELETE COLUMN
+  const handleDeleteColumn = (id) => {
+    listColumns.current.columns = listColumns.current.columns.filter(
+      (e) => e.id !== id
+    );
+    listColumns.current.columnOrder = listColumns.current.columnOrder.filter(
+      (e) => e != id
+    );
+
+    setColumns(listColumns.current.columns);
+    localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
+  };
+
+  useEffect(() => {
+    isEditTitleColumn && editTitleRef.current.focus();
+  }, [isEditTitleColumn]);
 
   return (
     <div ref={setNodeRef} style={styleColumn} {...attributes}>
@@ -49,60 +89,68 @@ function Column2(props) {
             height: COLUMN_HEADER_HEIGHT,
             display: "flex",
             p: 2,
-            // pl: 2,
-
             alignItems: "center",
             cursor: "pointer",
             // backgroundColor: "red",
           }}
         >
-          {/* {column.title} */}
-          <div className="header-column">
-            <div className="title-column"> {column.title}</div>
-            <div className="delete-column">
-              <BsTrash />
+          {isEditTitleColumn ? (
+            <div className="header-column">
+              <div className="input-title-column">
+                <input
+                  value={titleColumn}
+                  ref={editTitleRef}
+                  onKeyDown={(e) => handleKeyPress(e)}
+                  onChange={(e) => setTitleColumn(e.target.value)}
+                  type="text"
+                />
+              </div>
             </div>
-          </div>
-          {/* <div className="header-column">
-            <div className="input-title-column">
-              <input type="text" />
+          ) : (
+            <div className="header-column">
+              <div
+                className="title-column"
+                onClick={() => setIsEditTitleColumn(true)}
+              >
+                {column.title}
+              </div>
+              <div
+                className="delete-column"
+                onClick={() => handleDeleteColumn(column.id)}
+              >
+                <BsTrash />
+              </div>
             </div>
-          </div> */}
+          )}
         </Box>
-        <ListCards cards={column.cards} />
-        <Box
-          sx={{
-            height: COLUMN_FOOTER_HEIGHT,
-            p: 1,
-            alignItems: "center",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            fontSize: "16px",
-          }}
-        >
-          <div className="footer-column">
-            <AiOutlinePlus />
-            Thêm thẻ
-          </div>
-        </Box>
-      </Box>
+        <ListCards
+          isAddCard={isAddCard}
+          setIsAddCard={setIsAddCard}
+          cards={column.cards}
+          setColumns={setColumns}
+          listColumns={listColumns}
+          column={column}
+          columns={columns}
+        />
+        {!isAddCard && (
+          <Box
+            sx={{
+              height: COLUMN_FOOTER_HEIGHT,
+              p: 1.5,
+              alignItems: "center",
+              cursor: "pointer",
+              display: "flex",
 
-      {/* <div
-        className="column"
-        ref={setNodeRef}
-        style={styleColumn}
-        {...attributes}
-        {...listeners}
-      >
-        <div className="column-header"> {column.title}</div>
-        <div className="column-content">
-          {column.cards.map((card) => {
-            return <div className="card">{card.title}</div>;
-          })}
-        </div>
-        <div className="column-footer"> {column.title}</div>
-      </div> */}
+              fontSize: "16px",
+            }}
+          >
+            <div className="footer-column" onClick={() => setIsAddCard(true)}>
+              <AiOutlinePlus />
+              Thêm thẻ
+            </div>
+          </Box>
+        )}
+      </Box>
     </div>
   );
 }

@@ -15,7 +15,64 @@ const COLUMN_HEADER_HEIGHT = "50px";
 const COLUMN_FOOTER_HEIGHT = "56px";
 
 function ListCards(props) {
-  const { cards } = props;
+  const {
+    cards,
+    isAddCard,
+    setIsAddCard,
+    setColumns,
+    listColumns,
+    column,
+    columns,
+  } = props;
+  const [listCard, setListCard] = useState(cards);
+
+  const handleAddNewCard = (title) => {
+    let newCard = {
+      id: "card-" + Date.now(),
+      boardId: column.boardId,
+      columnId: column.id,
+      title: title.trim(),
+    };
+
+    setListCard([...listCard, newCard]);
+    let newColumn = column;
+    newColumn.cardOrder.push(newCard.id);
+    newColumn.cards.push(newCard);
+
+    localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
+  };
+  const handleDeleteSigleCard = (id) => {
+    const indexColumn = listColumns.current.columns.findIndex(
+      (e) => e.id === column.id
+    );
+    let fakeColumn = JSON.parse(JSON.stringify(columns));
+    fakeColumn[indexColumn].cardOrder = fakeColumn[
+      indexColumn
+    ].cardOrder.filter((e) => e !== id);
+    fakeColumn[indexColumn].cards = fakeColumn[indexColumn].cards.filter(
+      (e) => e.id !== id
+    );
+    let fakeColumnsToSaveLS = JSON.parse(JSON.stringify(fakeColumn));
+    if (fakeColumn[indexColumn].cardOrder.length === 0) {
+      let cardPlaceHolder = {
+        id: `${fakeColumn[indexColumn].id}-placeholder-card`,
+        boardId: fakeColumn[indexColumn].boardId,
+        columnId: fakeColumn[indexColumn].id,
+        FE_PlaceholerCard: true,
+      };
+      fakeColumn[indexColumn].cardOrder.push(cardPlaceHolder.id);
+      fakeColumn[indexColumn].cards.push(cardPlaceHolder);
+    }
+    setColumns(fakeColumn);
+    listColumns.current.columns = fakeColumnsToSaveLS;
+
+    localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
+  };
+
+  useEffect(() => {
+    setListCard(cards);
+  }, [cards]);
+
   return (
     <SortableContext
       strategy={verticalListSortingStrategy}
@@ -54,9 +111,26 @@ function ListCards(props) {
         }}
       >
         {cards.map((card) => {
-          return <Card2 key={card.id} card={card} />;
+          return (
+            <Card2
+              key={card.id}
+              card={card}
+              column={column}
+              listColumns={listColumns}
+              setListCard={setListCard}
+              cards={cards}
+              setColumns={setColumns}
+              columns={columns}
+              handleDeleteSigleCard={handleDeleteSigleCard}
+            />
+          );
         })}
-        {/* <AddCard /> */}
+        {isAddCard && (
+          <AddCard
+            handleAddNewCard={handleAddNewCard}
+            setIsAddCard={setIsAddCard}
+          />
+        )}
       </Box>
     </SortableContext>
   );

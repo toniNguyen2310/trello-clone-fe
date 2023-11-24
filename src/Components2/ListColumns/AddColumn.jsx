@@ -1,37 +1,100 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
 
 function AddColumn(props) {
+  const { board, setColumns, listColumns, columns } = props;
+  const [isCreateColumn, setIsCreateColumn] = useState(false);
+  const [titleColumn, setTitleColumn] = useState("");
+  const addcolumnRef = useRef(null);
+  //ENTER TO SUBMIT TO ADD NEW COLUMN
+  const handleKeyPress = (e) => {
+    let key = e.keyCode || e.which;
+    if (key === 13) {
+      e.preventDefault();
+      addNewColumn();
+    }
+  };
+
+  //HANDLE ADD COLUMN
+  const addNewColumn = () => {
+    if (!titleColumn.trim()) {
+      return;
+    }
+    let newColumn = {
+      id: "column-" + Date.now(),
+      boardId: board.id,
+      title: titleColumn.trim(),
+      cardOrder: [`column-${Date.now()}-placeholder-card`],
+      cards: [
+        {
+          id: `column-${Date.now()}-placeholder-card`,
+          boardId: "board-1",
+          columnId: "column-" + Date.now(),
+          FE_PlaceholerCard: true,
+        },
+      ],
+    };
+    let newColumn2 = {
+      id: "column-" + Date.now(),
+      boardId: board.id,
+      title: titleColumn.trim(),
+      cardOrder: [],
+      cards: [],
+    };
+
+    setColumns([...columns, newColumn]);
+    listColumns.current.columns.push(newColumn2);
+    listColumns.current.columnOrder.push(newColumn2.id);
+    localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
+    setTitleColumn("");
+    addcolumnRef.current.focus();
+  };
+
+  useEffect(() => {
+    isCreateColumn && addcolumnRef.current.focus();
+  }, [isCreateColumn]);
+
   return (
     <>
-      <div className=" column">
-        <div className="card card-edit">
-          <textarea
-            //   ref={cardRef}
-            placeholder="Nhập tiêu đề cho danh sách"
-            //   value={value}
-            className="texarea"
-            name=""
-            id=""
-            rows="3"
-            cols="10"
-            //   onChange={(e) => setValue(e.target.value)}
-            //   onKeyDown={(e) => handleKeyPress(e)}
-          ></textarea>
-        </div>
-        <div className="card-edit-save">
-          <div className="card-add-btn">Thêm danh sách</div>
-          <div className="card-edit-save-x">
-            <AiOutlineClose />
+      {isCreateColumn ? (
+        <div className=" column">
+          <div className="card card-edit">
+            <textarea
+              ref={addcolumnRef}
+              placeholder="Nhập tiêu đề cho danh sách"
+              value={titleColumn}
+              className="texarea"
+              name=""
+              id=""
+              rows="3"
+              cols="10"
+              onChange={(e) => setTitleColumn(e.target.value)}
+              onKeyDown={(e) => handleKeyPress(e)}
+            ></textarea>
+          </div>
+          <div className="card-edit-save">
+            <div className="card-add-btn" onClick={addNewColumn}>
+              Thêm danh sách
+            </div>
+            <div
+              className="card-edit-save-x"
+              onClick={() => setIsCreateColumn(false)}
+            >
+              <AiOutlineClose />
+            </div>
           </div>
         </div>
-      </div>
-      {/* <div className="column bg-836d9e">
-        <div className="btn-add-column">
-          <AiOutlinePlus />
-          Thêm danh sách
+      ) : (
+        <div
+          className="column bg-836d9e"
+          onClick={() => setIsCreateColumn(true)}
+        >
+          <div className="btn-add-column">
+            <AiOutlinePlus />
+            Thêm danh sách
+          </div>
         </div>
-      </div> */}
+      )}
     </>
   );
 }

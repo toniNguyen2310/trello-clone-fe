@@ -13,7 +13,7 @@ function BoardBar(props) {
         alignItems: "center",
         justifyContent: "space-between",
         overflowX: "auto",
-        borderTop: "1px solid #fff",
+        borderTop: "1px solid #6f6f6f",
         color: "#ffffff",
         fontWeight: "bold",
         fontSize: "18px",

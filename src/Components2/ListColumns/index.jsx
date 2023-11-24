@@ -23,7 +23,8 @@ import AddColumn from "./AddColumn";
 const COLUMN_HEADER_HEIGHT = "50px";
 const COLUMN_FOOTER_HEIGHT = "56px";
 function ListColumns(props) {
-  const { columns } = props;
+  const { columns, listColumns, board, setColumns } = props;
+
   return (
     <>
       <Box
@@ -63,10 +64,23 @@ function ListColumns(props) {
           {columns &&
             columns.length > 0 &&
             columns.map((column) => {
-              return <Column2 key={column.id} column={column} />;
+              return (
+                <Column2
+                  listColumns={listColumns}
+                  key={column.id}
+                  column={column}
+                  columns={columns}
+                  setColumns={setColumns}
+                />
+              );
             })}
         </SortableContext>
-        <AddColumn />
+        <AddColumn
+          board={board}
+          setColumns={setColumns}
+          listColumns={listColumns}
+          columns={columns}
+        />
       </Box>
     </>
   );

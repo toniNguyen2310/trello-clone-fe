@@ -139,14 +139,14 @@ function BoardContent(props) {
             return e;
           }
         );
-        console.log("cardsWithoutSortable>>>", cardsWithoutSortable);
+
         customColumnToSaveLs[indexEnd].cards = cardsWithoutSortable;
         //Khi có column rỗng
         if (indexEmpty > -1) {
           customColumnToSaveLs[indexEmpty].cardOrder = [];
           customColumnToSaveLs[indexEmpty].cards = [];
         }
-        console.log("customColumnToSaveLs>>>", customColumnToSaveLs);
+
         listColumns.current.columns = customColumnToSaveLs;
         localStorage.setItem(
           "listColumns",
@@ -335,7 +335,12 @@ function BoardContent(props) {
             // overflowY: "hidden",
           }}
         >
-          <ListColumns columns={columns} />
+          <ListColumns
+            listColumns={listColumns}
+            board={board}
+            columns={columns}
+            setColumns={setColumns}
+          />
           <DragOverlay dropAnimation={customDropAnimation}>
             {!activeDragItemType && null}
             {activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
