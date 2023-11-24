@@ -19,7 +19,7 @@ function BoardBar(props) {
         fontSize: "18px",
       }}
     >
-      Board Name
+      TO DO LIST
     </Box>
   );
 }

@@ -54,10 +54,19 @@ function AddColumn(props) {
     isCreateColumn && addcolumnRef.current.focus();
   }, [isCreateColumn]);
 
+  //HANDLE DELETE SIGLE CARD
+  window.addEventListener("click", function (event) {
+    if (!event.target.closest(`#add-column`)) {
+      setIsCreateColumn(false);
+    } else {
+      setIsCreateColumn(true);
+    }
+  });
+
   return (
     <>
       {isCreateColumn ? (
-        <div className=" column">
+        <div className="column" id="add-column">
           <div className="card card-edit">
             <textarea
               ref={addcolumnRef}

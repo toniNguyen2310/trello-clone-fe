@@ -127,6 +127,7 @@ function ListCards(props) {
         })}
         {isAddCard && (
           <AddCard
+            column={column}
             handleAddNewCard={handleAddNewCard}
             setIsAddCard={setIsAddCard}
           />

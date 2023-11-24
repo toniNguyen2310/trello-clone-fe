@@ -56,16 +56,12 @@ function Card2(props) {
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
     setIsEditCard(false);
   };
-  //HANDLE DELETE SIGLE CARD
-
-  useEffect(() => {
-    // isEditCard && titleCardRef.current.focus();
-  }, [isEditCard]);
 
   return (
     <>
       {isEditCard ? (
         <EditCard
+          setIsEditCard={setIsEditCard}
           handleEditTitleCard={handleEditTitleCard}
           titleCardRef={titleCardRef}
           card={card}
@@ -93,7 +89,11 @@ function Card2(props) {
               display: "flex",
             }}
           >
-            <div className="title-card" onClick={() => setIsEditCard(true)}>
+            <div
+              className="title-card"
+              id={`card-${card.id}`}
+              onClick={() => setIsEditCard(true)}
+            >
               {card.title}
             </div>
             <div

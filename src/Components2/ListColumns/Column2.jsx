@@ -5,7 +5,6 @@ import { useSortable } from "@dnd-kit/sortable";
 import ListCards from "../ListCards.jsx";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
-import AddColumn from "./AddColumn.jsx";
 import { message } from "antd";
 const COLUMN_HEADER_HEIGHT = "50px";
 const COLUMN_FOOTER_HEIGHT = "50px";
@@ -66,6 +65,16 @@ function Column2(props) {
 
   useEffect(() => {
     isEditTitleColumn && editTitleRef.current.focus();
+    if (isEditTitleColumn) {
+      window.addEventListener("click", function (event) {
+        if (event.target.closest(`#header-column-${column.id}`)) {
+          setIsEditTitleColumn(true);
+        } else {
+          setIsEditTitleColumn(false);
+          setTitleColumn(column?.title);
+        }
+      });
+    }
   }, [isEditTitleColumn]);
 
   return (
@@ -91,11 +100,10 @@ function Column2(props) {
             p: 2,
             alignItems: "center",
             cursor: "pointer",
-            // backgroundColor: "red",
           }}
         >
           {isEditTitleColumn ? (
-            <div className="header-column">
+            <div className="header-column" id={`header-column-${column.id}`}>
               <div className="input-title-column">
                 <input
                   value={titleColumn}

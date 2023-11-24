@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 
 function AddCard(props) {
-  const { setIsAddCard, handleAddNewCard } = props;
+  const { setIsAddCard, handleAddNewCard, column } = props;
   const [titleCard, setTitleCard] = useState("");
   const addCardRef = useRef(null);
   const handleKeyPress = (e) => {
@@ -27,7 +27,7 @@ function AddCard(props) {
   }, []);
 
   return (
-    <div className="Add-edit-cart">
+    <div className="Add-edit-cart" id={`add-card-${column.id}`}>
       <div className="card card-edit">
         <textarea
           ref={addCardRef}

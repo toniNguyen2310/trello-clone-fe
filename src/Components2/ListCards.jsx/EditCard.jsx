@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 
 function EditCard(props) {
-  const { titleCardRef, handleEditTitleCard, card } = props;
+  const { titleCardRef, handleEditTitleCard, card, setIsEditCard } = props;
   const [titleCard, setTitleCard] = useState();
 
   const handleKeyPress = (e) => {
@@ -15,11 +15,14 @@ function EditCard(props) {
 
   useEffect(() => {
     setTitleCard(card.title);
+    console.log(card.id);
   }, []);
+
   return (
-    <div className="Add-edit-cart">
+    <div className="Add-edit-cart" id={`editCard-${card.id}`}>
       <div className="card card-edit">
         <textarea
+          spellcheck="false"
           // ref={titleCardRef}
           autoFocus
           placeholder="Nhập tiêu đề cho thẻ này"
