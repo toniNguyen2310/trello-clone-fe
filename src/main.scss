@@ -302,7 +302,7 @@
 .css-1blc1iw-MuiPaper-root-MuiCard-root:hover {
   border: 1px solid #333;
   .button-delete-card {
-    opacity: 1;
+    opacity: 1 !important;
   }
 }
 
@@ -320,5 +320,5 @@
   font-size: 14px;
 }
 .button-delete-card:hover {
-  background-color: #a19e9e;
+  background-color: #a19e9e !important;
 }
