@@ -80,6 +80,13 @@ function Card2(props) {
             overflow: "unset",
             boxShadow: card?.FE_PlaceholerCard & "unset",
             height: card?.FE_PlaceholerCard ? "1px" : "unset",
+            border: "1px solid #d6d1d1",
+            "&:hover": {
+              border: "1px solid #333",
+              ".button-delete-card": {
+                opacity: 1,
+              },
+            },
           }}
         >
           <CardContent
