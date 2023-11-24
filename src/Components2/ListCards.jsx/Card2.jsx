@@ -76,17 +76,19 @@ function Card2(props) {
           sx={{
             borderRadius: "10px",
             cursor: "pointer",
-            backgroundColor: card?.FE_PlaceholerCard ? "#f1f2f4 " : "#d6d1d1",
+
             overflow: "unset",
             boxShadow: card?.FE_PlaceholerCard & "unset",
             height: card?.FE_PlaceholerCard ? "1px" : "unset",
-            border: "1px solid #d6d1d1",
+
+            border: card?.FE_PlaceholerCard ? "none" : "1px solid #d6d1d1",
             "&:hover": {
-              border: "1px solid #333",
+              border: card?.FE_PlaceholerCard ? "none" : "1px solid #333",
               ".button-delete-card": {
                 opacity: 1,
               },
             },
+            backgroundColor: card?.FE_PlaceholerCard ? "#f1f2f4 " : "#d6d1d1",
           }}
         >
           <CardContent
