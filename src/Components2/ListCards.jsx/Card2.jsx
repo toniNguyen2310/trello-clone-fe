@@ -4,7 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
 import { BsTrash } from "react-icons/bs";
-
+import "./card.scss";
 import EditCard from "./EditCard";
 import { message } from "antd";
 function Card2(props) {
