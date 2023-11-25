@@ -26,6 +26,7 @@ function ListCards(props) {
   } = props;
   const [listCard, setListCard] = useState(cards);
 
+  //HANDLE ADD NEW CARD
   const handleAddNewCard = (title) => {
     let newCard = {
       id: "card-" + Date.now(),
@@ -38,9 +39,26 @@ function ListCards(props) {
     let newColumn = column;
     newColumn.cardOrder.push(newCard.id);
     newColumn.cards.push(newCard);
+    let indexColumn = listColumns.current.columns.findIndex(
+      (e) => e.id === newColumn.id
+    );
+
+    let indexPlaceHolder = newColumn.cards.findIndex(
+      (e) => e.FE_PlaceholerCard
+    );
+    //loại trừ placeholder
+    if (indexPlaceHolder > -1) {
+      let idOrder = newColumn.cards[indexPlaceHolder].id;
+      newColumn.cards = newColumn.cards.filter((e) => !e.FE_PlaceholerCard);
+      newColumn.cardOrder = newColumn.cardOrder.filter((e) => e !== idOrder);
+    }
+
+    listColumns.current.columns[indexColumn] = newColumn;
 
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
   };
+
+  //HANDLE DELETE SIGLE CARD
   const handleDeleteSigleCard = (id) => {
     const indexColumn = listColumns.current.columns.findIndex(
       (e) => e.id === column.id

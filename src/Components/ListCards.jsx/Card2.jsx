@@ -80,6 +80,7 @@ function Card2(props) {
             overflow: "unset",
             boxShadow: card?.FE_PlaceholerCard & "unset",
             height: card?.FE_PlaceholerCard ? "1px" : "unset",
+            opacity: card?.FE_PlaceholerCard ? 0 : 1,
 
             border: card?.FE_PlaceholerCard ? "none" : "1px solid #d6d1d1",
             "&:hover": {

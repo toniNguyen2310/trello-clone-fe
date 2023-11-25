@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 
 function BoardBar(props) {
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      let nameUser = JSON.parse(localStorage.getItem("user")).username;
+      setUser(nameUser.split(" ")[nameUser.split(" ").length - 1]);
+    } else {
+      setUser("");
+    }
+  }, [user]);
   return (
     <Box
       sx={{
@@ -19,7 +29,7 @@ function BoardBar(props) {
         fontSize: "18px",
       }}
     >
-      TO DO LIST
+      {user ? `Board của ${user}` : "BOARD NAME"}
     </Box>
   );
 }

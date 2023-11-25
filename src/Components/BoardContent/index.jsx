@@ -25,9 +25,9 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 };
 
 function BoardContent(props) {
+  const { columns, setColumns, board, setBoard } = props;
   const listColumns = useRef([]);
-  const [board, setBoard] = useState({});
-  const [columns, setColumns] = useState([]);
+
   //check when start drag
   const [activeDragItemId, setActiveDragItemId] = useState(null);
   const [activeDragItemType, setActiveDragItemType] = useState(null);
@@ -124,9 +124,9 @@ function BoardContent(props) {
         let indexEmpty = customColumnToSaveLs.findIndex(
           (e) => e.cards[0].FE_PlaceholerCard
         );
-        // let indexSortable = nextColumns.findIndex(
-        //   (e) => e.cards[0].FE_PlaceholerCard
-        // );
+        let indexSortable = nextColumns.findIndex(
+          (e) => e.cards[0].FE_PlaceholerCard
+        );
         let indexEnd = customColumnToSaveLs.findIndex(
           (e) => e.id === nextOverColumn.id
         );
@@ -298,20 +298,45 @@ function BoardContent(props) {
 
   //RENDER LIST BOARD
   useEffect(() => {
-    const boardInitData = initData;
-    if (boardInitData) {
-      setBoard(boardInitData);
-      let listColOrder = softOrder(
-        boardInitData.columns,
-        boardInitData.columnOrder,
-        "id"
-      );
-      setColumns(listColOrder);
+    //Khi có sẵn list trong DS
+    if (localStorage.getItem("listColumns")) {
+      const boardInitData = JSON.parse(localStorage.getItem("listColumns"));
 
-      listColumns.current = boardInitData;
-      localStorage.setItem("listColumns", JSON.stringify(boardInitData));
+      for (let i = 0; i < boardInitData.columns.length; i++) {
+        if (boardInitData.columns[i].cards.length === 0) {
+          let plaholder = createPlaceHolderCard(boardInitData.columns[i]);
+          boardInitData.columns[i].cards.push(plaholder);
+          boardInitData.columns[i].cardOrder.push(plaholder.id);
+        }
+      }
+      if (boardInitData) {
+        setBoard(boardInitData);
+        let listColOrder = softOrder(
+          boardInitData.columns,
+          boardInitData.columnOrder,
+          "id"
+        );
+        setColumns(listColOrder);
+        listColumns.current = boardInitData;
+        localStorage.setItem("listColumns", JSON.stringify(boardInitData));
+      }
+    } else {
+      //Không có trong DS
+      const boardInitData = initData;
+      if (boardInitData) {
+        setBoard(boardInitData);
+        let listColOrder = softOrder(
+          boardInitData.columns,
+          boardInitData.columnOrder,
+          "id"
+        );
+        setColumns(listColOrder);
+        listColumns.current = boardInitData;
+        localStorage.setItem("listColumns", JSON.stringify(boardInitData));
+      }
     }
   }, []);
+
   return (
     <>
       <DndContext

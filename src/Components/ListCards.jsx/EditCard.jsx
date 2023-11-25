@@ -22,7 +22,7 @@ function EditCard(props) {
     <div className="Add-edit-cart" id={`editCard-${card.id}`}>
       <div className="card card-edit">
         <textarea
-          spellcheck="false"
+          spellCheck="false"
           // ref={titleCardRef}
           autoFocus
           placeholder="Nhập tiêu đề cho thẻ này"

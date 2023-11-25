@@ -3,7 +3,7 @@ import "./register.scss";
 import { NavLink } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineClose } from "react-icons/ai";
 import { message, notification } from "antd";
-import LoadingButton from "../Variable/Variable";
+import LoadingButton from "../Loading/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import { callRegister } from "../../Service/service";
 

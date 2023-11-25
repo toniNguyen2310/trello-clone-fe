@@ -1,12 +1,12 @@
 export const initData = {
   id: "board-1",
-  columnOrder: ["column-1", "column-2", "column-3"],
+  columnOrder: ["column-1", "column-3", "column-2"],
   columns: [
     {
       id: "column-1",
       boardId: "board-1",
       title: "To Do",
-      cardOrder: ["card-1", "card-2", "card-3", "card-4", "card-51"],
+      cardOrder: ["card-1", "card-2", "card-3"],
       cards: [
         {
           id: "card-1",
@@ -25,18 +25,6 @@ export const initData = {
           boardId: "board-1",
           columnId: "column-1",
           title: "Meet friends at 14PM ",
-        },
-        {
-          id: "card-4",
-          boardId: "board-1",
-          columnId: "column-1",
-          title: "Exercise",
-        },
-        {
-          id: "card-51",
-          boardId: "board-1",
-          columnId: "column-1",
-          title: "Listen Podcast",
         },
       ],
     },

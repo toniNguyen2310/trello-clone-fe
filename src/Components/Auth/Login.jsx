@@ -4,7 +4,7 @@ import { message } from "antd";
 
 import { NavLink, useNavigate } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineClose } from "react-icons/ai";
-import LoadingButton from "../Variable/Variable";
+import LoadingButton from "../Loading/LoadingButton";
 import { callLogin } from "../../Service/service";
 function Login(props) {
   const navigate = useNavigate();
@@ -43,7 +43,9 @@ function Login(props) {
         username: res.data.userWP.username,
         email: res.data.userWP.email,
       };
+      const board = res.data.userWP.board;
       localStorage.setItem("user", JSON.stringify(dataUser));
+      localStorage.setItem("listColumns", JSON.stringify(board));
       isDuplicate = true;
       message.success("Đăng nhập thành công");
       navigate("/");
