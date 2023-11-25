@@ -6,7 +6,8 @@ import { useSortable } from "@dnd-kit/sortable";
 import { BsTrash } from "react-icons/bs";
 import "./card.scss";
 import EditCard from "./EditCard";
-import { message } from "antd";
+import { message, Popconfirm } from "antd";
+import { editBoardContent } from "../../Utilities/variable";
 function Card2(props) {
   const {
     card,
@@ -55,6 +56,16 @@ function Card2(props) {
     newColumn.cards[indexCard].title = title.trim();
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
     setIsEditCard(false);
+    //DATA TO CALL API
+    if (localStorage.getItem("user")) {
+      editBoardContent();
+    }
+  };
+
+  //CONFIRM DELETE
+  const confirmDelete = () => {
+    handleDeleteSigleCard(card.id);
+    message.success("Xóa thành công!");
   };
 
   return (
@@ -106,12 +117,16 @@ function Card2(props) {
             >
               {card.title}
             </div>
-            <div
-              className="button-delete-card"
-              onClick={() => handleDeleteSigleCard(card.id)}
+            <Popconfirm
+              title="Xóa thẻ"
+              description="Bạn vẫn muốn xóa thẻ này chứ?"
+              onConfirm={confirmDelete}
+              // onCancel={cancelDelete}
             >
-              <BsTrash />
-            </div>
+              <div className="button-delete-card">
+                <BsTrash />
+              </div>{" "}
+            </Popconfirm>
           </CardContent>
         </Card>
       )}

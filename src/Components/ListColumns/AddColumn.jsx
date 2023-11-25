@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
+import { editBoard } from "../../Service/service";
+import { editBoardContent } from "../../Utilities/variable";
 
 function AddColumn(props) {
   const { board, setColumns, listColumns, columns } = props;
@@ -48,6 +50,11 @@ function AddColumn(props) {
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
     setTitleColumn("");
     addcolumnRef.current.focus();
+
+    //DATA TO CALL API
+    if (localStorage.getItem("user")) {
+      editBoardContent();
+    }
   };
 
   useEffect(() => {

@@ -66,6 +66,7 @@ instance.interceptors.response.use(
       localStorage.removeItem("user");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("access_token");
+      localStorage.removeItem("listColumns");
       window.location.href = "/login";
     }
 

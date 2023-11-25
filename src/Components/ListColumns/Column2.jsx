@@ -5,7 +5,9 @@ import { useSortable } from "@dnd-kit/sortable";
 import ListCards from "../ListCards.jsx";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
-import { message } from "antd";
+import { editBoardContent } from "../../Utilities/variable.js";
+import { message, Popconfirm } from "antd";
+
 const COLUMN_HEADER_HEIGHT = "50px";
 const COLUMN_FOOTER_HEIGHT = "50px";
 
@@ -48,6 +50,10 @@ function Column2(props) {
     newColumn.title = titleColumn.trim();
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
     setIsEditTitleColumn(false);
+    //DATA TO CALL API
+    if (localStorage.getItem("user")) {
+      editBoardContent();
+    }
   };
 
   //HANDLE DELETE COLUMN
@@ -61,6 +67,16 @@ function Column2(props) {
 
     setColumns(listColumns.current.columns);
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
+    //DATA TO CALL API
+    if (localStorage.getItem("user")) {
+      editBoardContent();
+    }
+  };
+
+  //Confirm
+  const confirmDelete = () => {
+    handleDeleteColumn(column.id);
+    message.success("Xóa thành công!");
   };
 
   useEffect(() => {
@@ -122,12 +138,16 @@ function Column2(props) {
               >
                 {column.title}
               </div>
-              <div
-                className="delete-column"
-                onClick={() => handleDeleteColumn(column.id)}
+              <Popconfirm
+                title="Xóa cột"
+                description="Bạn vẫn muốn xóa cột này chứ?"
+                onConfirm={confirmDelete}
+                // onCancel={cancelDelete}
               >
-                <BsTrash />
-              </div>
+                <div className="delete-column">
+                  <BsTrash />
+                </div>
+              </Popconfirm>
             </div>
           )}
         </Box>

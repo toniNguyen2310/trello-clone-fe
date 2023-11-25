@@ -4,10 +4,10 @@ import { FaUserCircle } from "react-icons/fa";
 import { BiSolidUser } from "react-icons/bi";
 import { HiOutlineLogout } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
-import { message } from "antd";
 import { callLogout } from "../../Service/service";
 import { initData } from "../../Utilities/InitData";
 import { softOrder } from "../../Utilities/softColumn";
+import { message } from "antd";
 function AppBar(props) {
   const { setSpinning, setColumns, setBoard } = props;
   const navigate = useNavigate();
@@ -62,9 +62,8 @@ function AppBar(props) {
     } else {
       setUser("");
     }
-    // let name = "toni nguyen";
-    // setUser(name.split(" ")[name.split(" ").length - 1]);
   }, []);
+
   return (
     <Box
       sx={{
@@ -91,10 +90,13 @@ function AppBar(props) {
           className="account-user"
           onClick={() => setIsMenu(true)}
         >
-          Hi, {user}
+          <b style={{ fontFamily: "cursive" }}> Hi, {user}</b>
           {isMenu && (
             <div className="drop-down">
-              <div className="drop-down-box">
+              <div
+                className="drop-down-box"
+                onClick={() => message.info("Tính năng đang bảo trì")}
+              >
                 <BiSolidUser />
                 Tài khoản
               </div>
@@ -108,7 +110,7 @@ function AppBar(props) {
       ) : (
         <div className="account-user" onClick={() => navigate("login")}>
           <FaUserCircle />
-          Login
+          <b style={{ fontFamily: "cursive" }}> Login</b>
         </div>
       )}
     </Box>

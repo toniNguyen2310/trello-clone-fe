@@ -1,3 +1,5 @@
+import { editBoard } from "../Service/service";
+
 export const applyDrag = (arr, dragResult) => {
   const { removedIndex, addedIndex, payload } = dragResult;
   if (removedIndex === null && addedIndex === null) return arr;
@@ -23,4 +25,15 @@ export const createPlaceHolderCard = (column) => {
     columnId: column.id,
     FE_PlaceholerCard: true,
   };
+};
+
+export const editBoardContent = () => {
+  //DATA TO CALL API
+  let idUser = JSON.parse(localStorage.getItem("user")).id;
+  let boardLs = JSON.parse(localStorage.getItem("listColumns"));
+  let data = {
+    UserId: idUser,
+    board: boardLs,
+  };
+  editBoard(data);
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import Box from "@mui/material/Box";
-
+import { editBoardContent } from "../../Utilities/variable";
 import {
   arrayMove,
   SortableContext,
@@ -54,6 +54,10 @@ function ListCards(props) {
     }
     listColumns.current.columns[indexColumn] = newColumn;
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
+    //DATA TO CALL API
+    if (localStorage.getItem("user")) {
+      editBoardContent();
+    }
   };
 
   //HANDLE DELETE SIGLE CARD
@@ -81,8 +85,11 @@ function ListCards(props) {
     }
     setColumns(fakeColumn);
     listColumns.current.columns = fakeColumnsToSaveLS;
-
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
+    //DATA TO CALL API
+    if (localStorage.getItem("user")) {
+      editBoardContent();
+    }
   };
 
   useEffect(() => {

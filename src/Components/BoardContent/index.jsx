@@ -17,7 +17,10 @@ import ListColumns from "../ListColumns";
 import Column2 from "../ListColumns/Column2";
 import Card2 from "../ListCards.jsx/Card2";
 import { cloneDeep, isEmpty } from "lodash";
-import { createPlaceHolderCard } from "../../Utilities/variable";
+import {
+  createPlaceHolderCard,
+  editBoardContent,
+} from "../../Utilities/variable";
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: "ACTIVE_DRAG_ITEM_TYPE_COLUMN",
@@ -283,7 +286,10 @@ function BoardContent(props) {
         );
       }
     }
-
+    //DATA TO CALL API
+    if (localStorage.getItem("user")) {
+      editBoardContent();
+    }
     setActiveDragItemId(null);
     setActiveDragItemType(null);
     setActiveDragItemData(null);

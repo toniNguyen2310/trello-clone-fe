@@ -63,7 +63,7 @@ body {
           content: url("https://trello.com/assets/87e1af770a49ce8e84e3.gif");
         }
       }
-      .account {
+      .account-user {
         position: relative;
         margin-right: 40px;
         padding: 5px 10px;
@@ -74,7 +74,7 @@ body {
         justify-content: center;
         text-decoration: none;
         gap: 6px;
-        color: #f8eded;
+        color: red;
         font-size: 16px;
         cursor: pointer;
         .drop-down {

@@ -22,10 +22,10 @@ export const callLogout = () => {
   return axios.post("/v1/api/auth/logout");
 };
 
-export const editInforUSer = (data) => {
-  return axios.put(`/v1/api/user/${data.id}`, data.user);
-};
+// export const editInforUSer = (data) => {
+//   return axios.put(`/v1/api/user/${data.id}`, data.user);
+// };
 
 export const editBoard = (data) => {
-  return axios.post(`/v1/api/user/board`, data);
+  return axios.put(`/v1/api/auth/board`, data);
 };
