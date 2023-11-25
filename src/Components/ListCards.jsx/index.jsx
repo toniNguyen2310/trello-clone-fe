@@ -34,9 +34,9 @@ function ListCards(props) {
       columnId: column.id,
       title: title.trim(),
     };
-
-    setListCard([...listCard, newCard]);
+    setListCard([...listCard.filter((e) => !e.FE_PlaceholerCard), newCard]);
     let newColumn = column;
+
     newColumn.cardOrder.push(newCard.id);
     newColumn.cards.push(newCard);
     let indexColumn = listColumns.current.columns.findIndex(
@@ -52,9 +52,7 @@ function ListCards(props) {
       newColumn.cards = newColumn.cards.filter((e) => !e.FE_PlaceholerCard);
       newColumn.cardOrder = newColumn.cardOrder.filter((e) => e !== idOrder);
     }
-
     listColumns.current.columns[indexColumn] = newColumn;
-
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
   };
 

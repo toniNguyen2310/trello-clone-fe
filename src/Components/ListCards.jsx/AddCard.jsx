@@ -5,11 +5,15 @@ function AddCard(props) {
   const { setIsAddCard, handleAddNewCard, column } = props;
   const [titleCard, setTitleCard] = useState("");
   const addCardRef = useRef(null);
+
   const handleKeyPress = (e) => {
     let key = e.keyCode || e.which;
     if (key === 13) {
       e.preventDefault();
       addToCard();
+      if (column.cards.length === 1) {
+        e.target.blur();
+      }
     }
   };
   //ADD NEW CARD
