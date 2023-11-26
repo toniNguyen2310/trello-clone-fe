@@ -33,11 +33,11 @@ function Login(props) {
       return;
     }
     const res = await callLogin(email.trim(), password.trim());
-    console.log("res>>>", res);
+
     if (res?.data?.userWP && !isDuplicate) {
       localStorage.setItem("access_token", res.data.accessToken);
       localStorage.setItem("refresh_token", res.data.refreshToken);
-      console.log(res.data.userWP);
+
       const dataUser = {
         id: res.data.userWP._id,
         username: res.data.userWP.username,

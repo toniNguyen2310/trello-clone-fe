@@ -15,7 +15,6 @@ function EditCard(props) {
 
   useEffect(() => {
     setTitleCard(card.title);
-    console.log(card.id);
   }, []);
 
   return (

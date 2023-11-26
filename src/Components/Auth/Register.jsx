@@ -61,7 +61,6 @@ function Register(props) {
     );
 
     if (res?.data?._id && !isDuplicate) {
-      console.log("res>>> ", res?.data);
       setIsLoading(false);
       message.success("Đăng ký tài khoản thành công");
       navigate("/login");
