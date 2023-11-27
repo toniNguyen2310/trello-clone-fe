@@ -287,7 +287,7 @@ function BoardContent(props) {
     }
     //DATA TO CALL API
     if (localStorage.getItem("user")) {
-      editBoardContent();
+      editBoardContent("swag");
     }
     setActiveDragItemId(null);
     setActiveDragItemType(null);

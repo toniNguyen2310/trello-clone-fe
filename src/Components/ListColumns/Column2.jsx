@@ -52,7 +52,7 @@ function Column2(props) {
     setIsEditTitleColumn(false);
     //DATA TO CALL API
     if (localStorage.getItem("user")) {
-      editBoardContent();
+      editBoardContent("edit-title-column");
     }
   };
 
@@ -69,7 +69,7 @@ function Column2(props) {
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
     //DATA TO CALL API
     if (localStorage.getItem("user")) {
-      editBoardContent();
+      editBoardContent("delete-column");
     }
   };
 

@@ -26,6 +26,6 @@ export const callLogout = () => {
 //   return axios.put(`/v1/api/user/${data.id}`, data.user);
 // };
 
-export const editBoard = (data) => {
-  return axios.put(`/v1/api/auth/board`, data);
+export const editBoard = (data, action) => {
+  return axios.put(`/v1/api/auth/board/${action}`, data);
 };

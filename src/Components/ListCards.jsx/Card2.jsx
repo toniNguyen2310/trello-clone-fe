@@ -58,7 +58,7 @@ function Card2(props) {
     setIsEditCard(false);
     //DATA TO CALL API
     if (localStorage.getItem("user")) {
-      editBoardContent();
+      editBoardContent("edit-title-card");
     }
   };
 

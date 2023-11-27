@@ -27,13 +27,18 @@ export const createPlaceHolderCard = (column) => {
   };
 };
 
-export const editBoardContent = () => {
+export const editBoardContent = (handle) => {
   //DATA TO CALL API
   let idUser = JSON.parse(localStorage.getItem("user")).id;
+  // let idBoardLs = JSON.parse(localStorage.getItem("listColumns")).id;
   let boardLs = JSON.parse(localStorage.getItem("listColumns"));
+
+  let action = handle;
   let data = {
+    boardId: boardLs.id,
     UserId: idUser,
+    columnOrder: boardLs.columnOrder,
     board: boardLs,
   };
-  editBoard(data);
+  editBoard(data, action);
 };
