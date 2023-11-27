@@ -58,7 +58,7 @@ function Card2(props) {
     setIsEditCard(false);
     //DATA TO CALL API
     if (localStorage.getItem("user")) {
-      editBoardContent("edit-title-card");
+      editBoardContent({ editTitle: title.trim() });
     }
   };
 
@@ -108,6 +108,7 @@ function Card2(props) {
               p: 1,
               "&:last-child": { p: 1 },
               display: "flex",
+              // backgroundColor: "red",
             }}
           >
             <div

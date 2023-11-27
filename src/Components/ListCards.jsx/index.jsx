@@ -56,7 +56,7 @@ function ListCards(props) {
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
     //DATA TO CALL API
     if (localStorage.getItem("user")) {
-      editBoardContent("add-card");
+      editBoardContent({ addCard: newCard });
     }
   };
 
@@ -88,7 +88,7 @@ function ListCards(props) {
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
     //DATA TO CALL API
     if (localStorage.getItem("user")) {
-      editBoardContent("delete-card");
+      editBoardContent({ deleteCard: id });
     }
   };
 

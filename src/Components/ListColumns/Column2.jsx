@@ -52,7 +52,7 @@ function Column2(props) {
     setIsEditTitleColumn(false);
     //DATA TO CALL API
     if (localStorage.getItem("user")) {
-      editBoardContent("edit-title-column");
+      editBoardContent({ editTitle: titleColumn.trim() });
     }
   };
 
@@ -69,7 +69,7 @@ function Column2(props) {
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
     //DATA TO CALL API
     if (localStorage.getItem("user")) {
-      editBoardContent("delete-column");
+      editBoardContent({ deleteColumn: id });
     }
   };
 
@@ -87,7 +87,10 @@ function Column2(props) {
           setIsEditTitleColumn(true);
         } else {
           setIsEditTitleColumn(false);
+          // handleEditTitleColumn();
           setTitleColumn(column?.title);
+
+          // console.log("column>>>", column.title);
         }
       });
     }

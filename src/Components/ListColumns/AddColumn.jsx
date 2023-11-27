@@ -53,7 +53,7 @@ function AddColumn(props) {
 
     //DATA TO CALL API
     if (localStorage.getItem("user")) {
-      editBoardContent("add-column");
+      editBoardContent({ addColumn: newColumn2 });
     }
   };
 

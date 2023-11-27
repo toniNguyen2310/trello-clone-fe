@@ -28,7 +28,8 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 };
 
 function BoardContent(props) {
-  const { columns, setColumns, board, setBoard, listColumns } = props;
+  const { columns, checkFetch, setColumns, board, setBoard, listColumns } =
+    props;
 
   //check when start drag
   const [activeDragItemId, setActiveDragItemId] = useState(null);
@@ -285,10 +286,10 @@ function BoardContent(props) {
         );
       }
     }
-    //DATA TO CALL API
     if (localStorage.getItem("user")) {
-      editBoardContent("swag");
+      editBoardContent({ swag: listColumns.current.columns });
     }
+
     setActiveDragItemId(null);
     setActiveDragItemType(null);
     setActiveDragItemData(null);
@@ -304,6 +305,7 @@ function BoardContent(props) {
   //RENDER LIST BOARD
   useEffect(() => {
     //Khi có sẵn list trong DS
+
     if (localStorage.getItem("listColumns")) {
       const boardInitData = JSON.parse(localStorage.getItem("listColumns"));
 
@@ -340,7 +342,7 @@ function BoardContent(props) {
         localStorage.setItem("listColumns", JSON.stringify(boardInitData));
       }
     }
-  }, []);
+  }, [checkFetch]);
 
   return (
     <>

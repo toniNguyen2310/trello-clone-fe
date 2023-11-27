@@ -9,8 +9,15 @@ import { initData } from "../../Utilities/InitData";
 import { softOrder } from "../../Utilities/softColumn";
 import { message } from "antd";
 function AppBar(props) {
-  const { setSpinning, setColumns, setBoard, user, setUser, listColumns } =
-    props;
+  const {
+    setSpinning,
+    checkFetch,
+    setColumns,
+    setBoard,
+    user,
+    setUser,
+    listColumns,
+  } = props;
   const navigate = useNavigate();
   const [isMenu, setIsMenu] = useState(false);
 
@@ -62,7 +69,7 @@ function AppBar(props) {
     } else {
       setUser("");
     }
-  }, []);
+  }, [checkFetch]);
 
   return (
     <Box
