@@ -31,14 +31,14 @@ export const initData = {
     {
       id: "column-2",
       boardId: "board-1",
-      title: "Doing",
+      title: "Done",
       cardOrder: ["card-6"],
       cards: [
         {
           id: "card-6",
           boardId: "board-1",
           columnId: "column-2",
-          title: "Đá bóng",
+          title: "Học bài",
         },
       ],
     },

@@ -28,8 +28,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 };
 
 function BoardContent(props) {
-  const { columns, setColumns, board, setBoard } = props;
-  const listColumns = useRef([]);
+  const { columns, setColumns, board, setBoard, listColumns } = props;
 
   //check when start drag
   const [activeDragItemId, setActiveDragItemId] = useState(null);

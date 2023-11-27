@@ -9,10 +9,10 @@ import { initData } from "../../Utilities/InitData";
 import { softOrder } from "../../Utilities/softColumn";
 import { message } from "antd";
 function AppBar(props) {
-  const { setSpinning, setColumns, setBoard } = props;
+  const { setSpinning, setColumns, setBoard, user, setUser, listColumns } =
+    props;
   const navigate = useNavigate();
   const [isMenu, setIsMenu] = useState(false);
-  const [user, setUser] = useState("");
 
   //HANDLE LOGOUT
   const handleLogout = async () => {
@@ -37,7 +37,7 @@ function AppBar(props) {
           "id"
         );
         setColumns(listColOrder);
-        // listColumns.current = boardInitData;
+        listColumns.current = boardInitData;
         localStorage.setItem("listColumns", JSON.stringify(boardInitData));
       }
       return;

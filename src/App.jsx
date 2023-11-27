@@ -15,6 +15,8 @@ function App() {
   const [spinning, setSpinning] = useState(false);
   const [columns, setColumns] = useState([]);
   const [board, setBoard] = useState({});
+  const [user, setUser] = useState("");
+  const listColumns = useRef([]);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -35,16 +37,20 @@ function App() {
                 sx={{ height: "100vh" }}
               >
                 <AppBar
+                  listColumns={listColumns}
+                  user={user}
+                  setUser={setUser}
                   setBoard={setBoard}
                   setColumns={setColumns}
                   setSpinning={setSpinning}
                 />
-                <BoardBar />
+                <BoardBar user={user} />
                 <BoardContent
                   setBoard={setBoard}
                   board={board}
                   columns={columns}
                   setColumns={setColumns}
+                  listColumns={listColumns}
                 />
                 <Loading spinning={spinning} />
               </Container>
@@ -63,6 +69,14 @@ function App() {
       ],
     },
   ]);
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      let nameUser = JSON.parse(localStorage.getItem("user")).username;
+      setUser(nameUser.split(" ")[nameUser.split(" ").length - 1]);
+    } else {
+      setUser("");
+    }
+  }, []);
 
   return (
     <>
