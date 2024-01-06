@@ -1,15 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CSS } from "@dnd-kit/utilities";
+import { cloneDeep } from "lodash";
 import Box from "@mui/material/Box";
-import { editBoardContent } from "../../Utilities/variable";
+import { editBoardContent, createPlaceHolderCard } from "../../Utilities/constant";
 import {
-  arrayMove,
   SortableContext,
-  useSortable,
-  horizontalListSortingStrategy,
-  verticalListSortingStrategy,
+  verticalListSortingStrategy
 } from "@dnd-kit/sortable";
-import Card2 from "./Card2";
+import Card from "./Card";
 import AddCard from "./AddCard";
 const COLUMN_HEADER_HEIGHT = "50px";
 const COLUMN_FOOTER_HEIGHT = "56px";
@@ -22,7 +19,7 @@ function ListCards(props) {
     setColumns,
     listColumns,
     column,
-    columns,
+    columns
   } = props;
   const [listCard, setListCard] = useState(cards);
 
@@ -32,69 +29,63 @@ function ListCards(props) {
       id: "card-" + Date.now(),
       boardId: column.boardId,
       columnId: column.id,
-      title: title.trim(),
+      title: title.trim()
     };
-    setListCard([...listCard.filter((e) => !e.FE_PlaceholerCard), newCard]);
-    let newColumn = column;
 
+    let newColumn = cloneDeep(column);
     newColumn.cardOrder.push(newCard.id);
     newColumn.cards.push(newCard);
     let indexColumn = listColumns.current.columns.findIndex(
       (e) => e.id === newColumn.id
     );
 
-    let indexPlaceHolder = newColumn.cards.findIndex(
-      (e) => e.FE_PlaceholerCard
+    let indexCardPlaceHolder = newColumn.cards.findIndex(
+      (e) => e.FE_PlaceholderCard
     );
-    //loại trừ placeholder
-    if (indexPlaceHolder > -1) {
-      let idOrder = newColumn.cards[indexPlaceHolder].id;
-      newColumn.cards = newColumn.cards.filter((e) => !e.FE_PlaceholerCard);
+    //remove card placeholder
+    if (indexCardPlaceHolder > -1) {
+      let idOrder = newColumn.cards[indexCardPlaceHolder].id;
+      newColumn.cards = newColumn.cards.filter((e) => !e.FE_PlaceholderCard);
       newColumn.cardOrder = newColumn.cardOrder.filter((e) => e !== idOrder);
     }
+
     listColumns.current.columns[indexColumn] = newColumn;
+
+    // listColumns.current.columns[indexColumn] = newColumn;
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
-    //DATA TO CALL API
+    setColumns([...listColumns.current.columns]);
+
     if (localStorage.getItem("user")) {
       editBoardContent({ addCard: newCard });
     }
   };
 
-  //HANDLE DELETE SIGLE CARD
-  const handleDeleteSigleCard = (id) => {
+  //HANDLE DELETE SINGLE CARD
+  const handleDeleteSingleCard = (id) => {
     const indexColumn = listColumns.current.columns.findIndex(
       (e) => e.id === column.id
     );
-    let fakeColumn = JSON.parse(JSON.stringify(columns));
-    fakeColumn[indexColumn].cardOrder = fakeColumn[
-      indexColumn
-    ].cardOrder.filter((e) => e !== id);
-    fakeColumn[indexColumn].cards = fakeColumn[indexColumn].cards.filter(
-      (e) => e.id !== id
-    );
-    let fakeColumnsToSaveLS = JSON.parse(JSON.stringify(fakeColumn));
-    if (fakeColumn[indexColumn].cardOrder.length === 0) {
-      let cardPlaceHolder = {
-        id: `${fakeColumn[indexColumn].id}-placeholder-card`,
-        boardId: fakeColumn[indexColumn].boardId,
-        columnId: fakeColumn[indexColumn].id,
-        FE_PlaceholerCard: true,
-      };
-      fakeColumn[indexColumn].cardOrder.push(cardPlaceHolder.id);
-      fakeColumn[indexColumn].cards.push(cardPlaceHolder);
+    let columnAfterDeleteCard = cloneDeep(column);
+    columnAfterDeleteCard.cards=columnAfterDeleteCard.cards.filter((e) => e.id !== id);
+    columnAfterDeleteCard.cardOrder=columnAfterDeleteCard.cardOrder.filter((e) => e !== id);
+    if (columnAfterDeleteCard.cardOrder.length === 0) {
+      let cardPlaceHolder = createPlaceHolderCard(columnAfterDeleteCard);
+      columnAfterDeleteCard.cardOrder.push(cardPlaceHolder.id);
+      columnAfterDeleteCard.cards.push(cardPlaceHolder);
     }
-    setColumns(fakeColumn);
-    listColumns.current.columns = fakeColumnsToSaveLS;
+    listColumns.current.columns[indexColumn]=columnAfterDeleteCard;
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
-    //DATA TO CALL API
+    setColumns([...listColumns.current.columns]);
     if (localStorage.getItem("user")) {
       editBoardContent({ deleteCard: id });
     }
+
   };
 
   useEffect(() => {
     setListCard(cards);
   }, [cards]);
+
 
   return (
     <SortableContext
@@ -103,7 +94,7 @@ function ListCards(props) {
     >
       <Box
         sx={{
-          p: "0 5px",
+          p: "0px 5px ",
           m: "0 5px",
           display: "flex",
           flexDirection: "column",
@@ -118,24 +109,24 @@ function ListCards(props) {
           "&::-webkit-scrollbar": {
             width: "8px",
             height: "8px",
-            borderRadius: "5px",
+            borderRadius: "5px"
           },
           "&::-webkit-scrollbar-thumb": {
             backgroundColor: "#ced0da",
-            borderRadius: "5px",
+            borderRadius: "5px"
           },
           "&::-webkit-scrollbar-thumb:hover": {
-            backgroundColor: "#bfc2cf",
+            backgroundColor: "#bfc2cf"
           },
           "&::-webkit-scrollbar-track": {
             backgroundColor: "#ededed",
-            borderRadius: "5px",
-          },
+            borderRadius: "5px"
+          }
         }}
       >
         {cards.map((card) => {
           return (
-            <Card2
+            <Card
               key={card.id}
               card={card}
               column={column}
@@ -144,7 +135,7 @@ function ListCards(props) {
               cards={cards}
               setColumns={setColumns}
               columns={columns}
-              handleDeleteSigleCard={handleDeleteSigleCard}
+              handleDeleteSingleCard={handleDeleteSingleCard}
             />
           );
         })}

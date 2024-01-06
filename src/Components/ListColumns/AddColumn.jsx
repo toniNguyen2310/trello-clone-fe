@@ -1,14 +1,15 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
-import { editBoard } from "../../Service/service";
-import { editBoardContent } from "../../Utilities/variable";
+import { editBoardContent } from "../../Utilities/constant";
 
 function AddColumn(props) {
-  const { board, setColumns, listColumns, columns } = props;
+  const { board, setColumns, listColumns } = props;
   const [isCreateColumn, setIsCreateColumn] = useState(false);
   const [titleColumn, setTitleColumn] = useState("");
   const addcolumnRef = useRef(null);
-  //ENTER TO SUBMIT TO ADD NEW COLUMN
+
+  //PRESS ENTER TO ADD NEW COLUMN
   const handleKeyPress = (e) => {
     let key = e.keyCode || e.which;
     if (key === 13) {
@@ -22,6 +23,7 @@ function AddColumn(props) {
     if (!titleColumn.trim()) {
       return;
     }
+    //New column
     let newColumn = {
       id: "column-" + Date.now(),
       boardId: board.id,
@@ -32,28 +34,22 @@ function AddColumn(props) {
           id: `column-${Date.now()}-placeholder-card`,
           boardId: "board-1",
           columnId: "column-" + Date.now(),
-          FE_PlaceholerCard: true,
-        },
-      ],
-    };
-    let newColumn2 = {
-      id: "column-" + Date.now(),
-      boardId: board.id,
-      title: titleColumn.trim(),
-      cardOrder: [],
-      cards: [],
+          FE_PlaceholderCard: true,
+        }
+      ]
     };
 
-    setColumns([...columns, newColumn]);
-    listColumns.current.columns.push(newColumn2);
-    listColumns.current.columnOrder.push(newColumn2.id);
+    listColumns.current.columns.push(newColumn);
+    listColumns.current.columnOrder.push(newColumn.id);
+    //SAVE
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
+    setColumns([...listColumns.current.columns]);
     setTitleColumn("");
     addcolumnRef.current.focus();
 
     //DATA TO CALL API
     if (localStorage.getItem("user")) {
-      editBoardContent({ addColumn: newColumn2 });
+      editBoardContent({ addColumn: newColumn });
     }
   };
 
@@ -61,7 +57,6 @@ function AddColumn(props) {
     isCreateColumn && addcolumnRef.current.focus();
   }, [isCreateColumn]);
 
-  //HANDLE DELETE SIGLE CARD
   window.addEventListener("click", function (event) {
     if (!event.target.closest(`#add-column`)) {
       setIsCreateColumn(false);

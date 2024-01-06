@@ -11,9 +11,9 @@ function AddCard(props) {
     if (key === 13) {
       e.preventDefault();
       addToCard();
-      if (column.cards.length === 1) {
-        e.target.blur();
-      }
+      // if (column.cards.length === 1) {
+      //   e.target.blur();
+      // }
     }
   };
   //ADD NEW CARD

@@ -23,7 +23,7 @@ export const createPlaceHolderCard = (column) => {
     id: `${column.id}-placeholder-card`,
     boardId: column.boardId,
     columnId: column.id,
-    FE_PlaceholerCard: true,
+    FE_PlaceholderCard: true,
   };
 };
 

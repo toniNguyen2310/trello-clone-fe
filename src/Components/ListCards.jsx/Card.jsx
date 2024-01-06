@@ -5,19 +5,16 @@ import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
 import { BsTrash } from "react-icons/bs";
 import "./card.scss";
+import { cloneDeep } from "lodash";
 import EditCard from "./EditCard";
 import { message, Popconfirm } from "antd";
-import { editBoardContent } from "../../Utilities/variable";
-function Card2(props) {
+import { editBoardContent } from "../../Utilities/constant";
+function Card1(props) {
   const {
     card,
-    column,
-    listColumns,
-    setListCard,
-    cards,
     setColumns,
-    columns,
-    handleDeleteSigleCard,
+    listColumns,
+    handleDeleteSingleCard
   } = props;
   const titleCardRef = useRef(null);
   const [isEditCard, setIsEditCard] = useState(false);
@@ -28,16 +25,17 @@ function Card2(props) {
     setNodeRef,
     transform,
     transition,
-    isDragging,
+    isDragging
   } = useSortable({ id: card?.id, data: { ...card } });
   const styleCard = {
     transform: CSS.Translate.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : undefined,
+    opacity: isDragging ? 0.5 : undefined
   };
 
   //HANDLE EDIT TITLE CARD
   const handleEditTitleCard = (title) => {
+    //Validate value title
     if (!title.trim()) {
       message.error("Thông tin đang trống");
       return;
@@ -46,17 +44,19 @@ function Card2(props) {
       setIsEditCard(false);
       return;
     }
+    //Find index
     const indexColumn = listColumns.current.columns.findIndex(
       (e) => e.id === card.columnId
     );
     const indexCard = listColumns.current.columns[indexColumn].cards.findIndex(
       (e) => e.id === card.id
     );
-    let newColumn = column;
-    newColumn.cards[indexCard].title = title.trim();
+    listColumns.current.columns[indexColumn].cards[indexCard].title = title.trim();
+    //SAVE
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
+    setColumns([...listColumns.current.columns]);
     setIsEditCard(false);
-    //DATA TO CALL API
+    //Call Api
     if (localStorage.getItem("user")) {
       editBoardContent({ editTitle: title.trim() });
     }
@@ -64,7 +64,7 @@ function Card2(props) {
 
   //CONFIRM DELETE
   const confirmDelete = () => {
-    handleDeleteSigleCard(card.id);
+    handleDeleteSingleCard(card.id);
     message.success("Xóa thành công!");
   };
 
@@ -87,27 +87,25 @@ function Card2(props) {
           sx={{
             borderRadius: "10px",
             cursor: "pointer",
-
             overflow: "unset",
-            boxShadow: card?.FE_PlaceholerCard & "unset",
-            height: card?.FE_PlaceholerCard ? "1px" : "unset",
-            opacity: card?.FE_PlaceholerCard ? 0 : 1,
-
-            border: card?.FE_PlaceholerCard ? "none" : "1px solid #d6d1d1",
+            // boxShadow: "unset",
+            height: card?.FE_PlaceholderCard ? "0px" : "unset",
+            opacity: card?.FE_PlaceholderCard ? 0 : 1,
+            border: card?.FE_PlaceholderCard ? "none" : "2px solid #ffffff",
             "&:hover": {
-              border: card?.FE_PlaceholerCard ? "none" : "1px solid #333",
+              border: card?.FE_PlaceholderCard ? "none" : "2px solid #1D7AFC",
               ".button-delete-card": {
-                opacity: 1,
-              },
+                opacity: 1
+              }
             },
-            backgroundColor: card?.FE_PlaceholerCard ? "#f1f2f4 " : "#d6d1d1",
+            backgroundColor: "#ffffff"
           }}
         >
           <CardContent
             sx={{
-              p: 1,
-              "&:last-child": { p: 1 },
-              display: "flex",
+              p: 0.8,
+              "&:last-child": { p: 0.8 },
+              display: "flex"
               // backgroundColor: "red",
             }}
           >
@@ -135,4 +133,4 @@ function Card2(props) {
   );
 }
 
-export default Card2;
+export default Card1;

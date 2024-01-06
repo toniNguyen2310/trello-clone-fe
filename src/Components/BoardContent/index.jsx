@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
-import { initData } from "../../Utilities/InitData";
-import { softOrder } from "../../Utilities/softColumn";
+import { initData, softOrder } from "../../Utilities/constant";
+
 import {
   DndContext,
   useSensor,
@@ -9,22 +11,22 @@ import {
   MouseSensor,
   DragOverlay,
   defaultDropAnimationSideEffects,
-  closestCorners,
+  closestCorners
 } from "@dnd-kit/core";
 import "./boardContent.scss";
 import { arrayMove } from "@dnd-kit/sortable";
 import ListColumns from "../ListColumns";
 import Column2 from "../ListColumns/Column2";
-import Card2 from "../ListCards.jsx/Card2";
+import Card from "../ListCards.jsx/Card";
 import { cloneDeep, isEmpty } from "lodash";
 import {
   createPlaceHolderCard,
-  editBoardContent,
-} from "../../Utilities/variable";
+  editBoardContent
+} from "../../Utilities/constant";
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: "ACTIVE_DRAG_ITEM_TYPE_COLUMN",
-  CARD: "ACTIVE_DRAG_ITEM_TYPE_CARD",
+  CARD: "ACTIVE_DRAG_ITEM_TYPE_CARD"
 };
 
 function BoardContent(props) {
@@ -40,8 +42,8 @@ function BoardContent(props) {
 
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
-      distance: 10,
-    },
+      distance: 10
+    }
   });
   const sensors = useSensors(mouseSensor);
 
@@ -107,7 +109,7 @@ function BoardContent(props) {
         );
         const rebuild_activeDraggingCardData = {
           ...activeDraggingCardData,
-          columnId: nextOverColumn.id,
+          columnId: nextOverColumn.id
         };
 
         nextOverColumn.cards = nextOverColumn.cards.toSpliced(
@@ -117,7 +119,7 @@ function BoardContent(props) {
         );
 
         nextOverColumn.cards = nextOverColumn.cards.filter(
-          (card) => !card.FE_PlaceholerCard
+          (card) => !card.FE_PlaceholderCard
         );
 
         nextOverColumn.cardOrder = nextOverColumn.cards.map((card) => card.id);
@@ -125,25 +127,25 @@ function BoardContent(props) {
       if (dragEnd) {
         let customColumnToSaveLs = JSON.parse(JSON.stringify(nextColumns));
         let indexEmpty = customColumnToSaveLs.findIndex(
-          (e) => e.cards[0].FE_PlaceholerCard
+          (e) => e.cards[0].FE_PlaceholderCard
         );
         let indexSortable = nextColumns.findIndex(
-          (e) => e.cards[0].FE_PlaceholerCard
+          (e) => e.cards[0].FE_PlaceholderCard
         );
         let indexEnd = customColumnToSaveLs.findIndex(
           (e) => e.id === nextOverColumn.id
         );
 
-        let cardsWithoutSortable = customColumnToSaveLs[indexEnd].cards.map(
-          (e) => {
-            if (e.sortable) {
-              delete e.sortable;
-            }
-            return e;
-          }
-        );
+        // let cardsWithoutSortable = customColumnToSaveLs[indexEnd].cards.map(
+        //   (e) => {
+        //     if (e.sortable) {
+        //       delete e.sortable;
+        //     }
+        //     return e;
+        //   }
+        // );
 
-        customColumnToSaveLs[indexEnd].cards = cardsWithoutSortable;
+        // customColumnToSaveLs[indexEnd].cards = cardsWithoutSortable;
         //Khi có column rỗng
         if (indexEmpty > -1) {
           customColumnToSaveLs[indexEmpty].cardOrder = [];
@@ -185,7 +187,7 @@ function BoardContent(props) {
     if (!active || !over) return;
     const {
       id: activeDraggingCardId,
-      data: { current: activeDraggingCardData },
+      data: { current: activeDraggingCardData }
     } = active;
     const { id: overCardId } = over;
     const activeColumn = findColumnByCardId(activeDraggingCardId);
@@ -218,7 +220,7 @@ function BoardContent(props) {
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
       const {
         id: activeDraggingCardId,
-        data: { current: activeDraggingCardData },
+        data: { current: activeDraggingCardData }
       } = active;
       const { id: overCardId } = over;
       const activeColumn = findColumnByCardId(activeDraggingCardId);
@@ -227,7 +229,7 @@ function BoardContent(props) {
       if (!activeColumn || !overColumn) return;
 
       if (oldColumnWhenDraggingCard.id !== overColumn.id) {
-        //DIFFERNT COLUMN
+        //DIFFERENT COLUMN
         let dragEnd = true;
         moveCardBetweenDifferentColumns(
           overColumn,
@@ -298,8 +300,8 @@ function BoardContent(props) {
 
   const customDropAnimation = {
     sideEffects: defaultDropAnimationSideEffects({
-      styles: { active: { opacity: "0.5" } },
-    }),
+      styles: { active: { opacity: "0.5" } }
+    })
   };
 
   //RENDER LIST BOARD
@@ -311,9 +313,9 @@ function BoardContent(props) {
 
       for (let i = 0; i < boardInitData.columns.length; i++) {
         if (boardInitData.columns[i].cards.length === 0) {
-          let plaholder = createPlaceHolderCard(boardInitData.columns[i]);
-          boardInitData.columns[i].cards.push(plaholder);
-          boardInitData.columns[i].cardOrder.push(plaholder.id);
+          let placeholder = createPlaceHolderCard(boardInitData.columns[i]);
+          boardInitData.columns[i].cards.push(placeholder);
+          boardInitData.columns[i].cardOrder.push(placeholder.id);
         }
       }
       if (boardInitData) {
@@ -342,6 +344,7 @@ function BoardContent(props) {
         localStorage.setItem("listColumns", JSON.stringify(boardInitData));
       }
     }
+
   }, [checkFetch]);
 
   return (
@@ -360,7 +363,7 @@ function BoardContent(props) {
               "linear-gradient(141deg, rgba(24, 52, 111, 1) 0%, rgba(9, 9, 121, 1) 41%, rgba(72, 22, 136, 1) 51%, rgba(149, 39, 155, 1) 79%, rgba(218, 85, 172, 1) 100%)",
             width: "100%",
             height: (theme) => theme.trello.boardContentHeight,
-            p: "10px 0 ",
+            p: "10px 0 "
 
             // display: "flex",
             // overflowX: "auto",
@@ -379,7 +382,7 @@ function BoardContent(props) {
               <Column2 column={activeDragItemData} />
             )}
             {activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
-              <Card2 card={activeDragItemData} />
+              <Card card={activeDragItemData} />
             )}
           </DragOverlay>
         </Box>

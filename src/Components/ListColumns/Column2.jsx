@@ -3,13 +3,13 @@ import Box from "@mui/material/Box";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
 import ListCards from "../ListCards.jsx";
-import { BsTrash } from "react-icons/bs";
+import { BsThreeDots } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
-import { editBoardContent } from "../../Utilities/variable.js";
+import { editBoardContent } from "../../Utilities/constant.js";
 import { message, Popconfirm } from "antd";
 
 const COLUMN_HEADER_HEIGHT = "50px";
-const COLUMN_FOOTER_HEIGHT = "50px";
+const COLUMN_FOOTER_HEIGHT = "55px";
 
 function Column2(props) {
   const { column, listColumns, setColumns, columns } = props;
@@ -41,16 +41,23 @@ function Column2(props) {
     }
   };
 
+  //HANDLE EDIT TITLE COLUMN
   const handleEditTitleColumn = () => {
+    //Validate
     if (!titleColumn.trim()) {
       message.error("Thông tin đang trống");
       return;
     }
-    let newColumn = column;
-    newColumn.title = titleColumn.trim();
+    //Find index column
+    const indexColumn = listColumns.current.columns.findIndex(
+      (e) => e.id === column.id
+    );
+    listColumns.current.columns[indexColumn].title = titleColumn.trim();
+    //SAVE
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
+    setColumns([...listColumns.current.columns]);
     setIsEditTitleColumn(false);
-    //DATA TO CALL API
+    //Call Api
     if (localStorage.getItem("user")) {
       editBoardContent({ editTitle: titleColumn.trim() });
     }
@@ -64,16 +71,16 @@ function Column2(props) {
     listColumns.current.columnOrder = listColumns.current.columnOrder.filter(
       (e) => e != id
     );
-
-    setColumns(listColumns.current.columns);
+    //SAVE
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
-    //DATA TO CALL API
+    setColumns([...listColumns.current.columns]);
+    //Call Api
     if (localStorage.getItem("user")) {
       editBoardContent({ deleteColumn: id });
     }
   };
 
-  //Confirm
+  //Confirm delete column
   const confirmDelete = () => {
     handleDeleteColumn(column.id);
     message.success("Xóa thành công!");
@@ -86,29 +93,29 @@ function Column2(props) {
         if (event.target.closest(`#header-column-${column.id}`)) {
           setIsEditTitleColumn(true);
         } else {
-          setIsEditTitleColumn(false);
           // handleEditTitleColumn();
           setTitleColumn(column?.title);
+          setIsEditTitleColumn(false);
 
-          // console.log("column>>>", column.title);
         }
       });
     }
   }, [isEditTitleColumn]);
 
+
   return (
     <div ref={setNodeRef} style={styleColumn} {...attributes}>
       <Box
         sx={{
-          minWidth: "300px",
-          maxWidth: "300px",
+          minWidth: "280px",
+          maxWidth: "280px",
           backgroundColor: "#f1f2f4",
           ml: 2,
-          borderRadius: "10px",
+          borderRadius: "12px",
           height: "fit-content",
           boxSizing: "border-box",
           maxHeight: (theme) =>
-            `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`,
+            `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)} )`
         }}
         {...listeners}
       >
@@ -148,7 +155,7 @@ function Column2(props) {
                 // onCancel={cancelDelete}
               >
                 <div className="delete-column">
-                  <BsTrash />
+                  <BsThreeDots />
                 </div>
               </Popconfirm>
             </div>

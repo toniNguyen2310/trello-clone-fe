@@ -5,8 +5,7 @@ import { BiSolidUser } from "react-icons/bi";
 import { HiOutlineLogout } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { callLogout } from "../../Service/service";
-import { initData } from "../../Utilities/InitData";
-import { softOrder } from "../../Utilities/softColumn";
+import { initData, softOrder } from "../../Utilities/constant";
 import { message } from "antd";
 function AppBar(props) {
   const {
