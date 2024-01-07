@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 
 function EditCard(props) {
-  const { titleCardRef, handleEditTitleCard, card, setIsEditCard } = props;
+  const { titleCardRef, handleEditTitleCard, card, setIsEditCard, setIsModal } = props;
   const [titleCard, setTitleCard] = useState();
 
   const handleKeyPress = (e) => {
@@ -38,7 +38,9 @@ function EditCard(props) {
       <div className="card-edit-save">
         <div
           className="card-edit-save-btn"
-          onClick={() => handleEditTitleCard(titleCard)}
+          onClick={() => {handleEditTitleCard(titleCard)
+           
+          }}
         >
           Lưu
         </div>

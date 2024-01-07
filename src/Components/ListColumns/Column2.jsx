@@ -7,15 +7,17 @@ import { BsThreeDots } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
 import { editBoardContent } from "../../Utilities/constant.js";
 import { message, Popconfirm } from "antd";
+import { Event } from "@mui/icons-material";
 
 const COLUMN_HEADER_HEIGHT = "50px";
 const COLUMN_FOOTER_HEIGHT = "55px";
 
 function Column2(props) {
-  const { column, listColumns, setColumns, columns } = props;
+  const { column, listColumns, setColumns, columns, setIsModal } = props;
   const editTitleRef = useRef(null);
   const [isAddCard, setIsAddCard] = useState(false);
   const [isEditTitleColumn, setIsEditTitleColumn] = useState(false);
+  const titleRef = useRef(null)
   const [titleColumn, setTitleColumn] = useState(column?.title);
 
   const {
@@ -24,42 +26,49 @@ function Column2(props) {
     listeners,
     setNodeRef,
     transform,
-    transition,
+    transition
   } = useSortable({ id: column?.id, data: { ...column } });
   const styleColumn = {
     transform: CSS.Translate.toString(transform),
     transition,
     height: "100%",
-    opacity: isDragging ? "0.5" : undefined,
+    opacity: isDragging ? "0.5" : undefined
   };
 
+  //Enter to change title
   const handleKeyPress = (e) => {
     let key = e.keyCode || e.which;
     if (key === 13) {
       e.preventDefault();
-      handleEditTitleColumn();
+      //Check title empty
+      if (!titleRef.current) {
+        setTitleColumn(column.title);
+        titleRef.current = null;
+      }
+      setIsEditTitleColumn(false);
     }
   };
 
   //HANDLE EDIT TITLE COLUMN
-  const handleEditTitleColumn = () => {
+  const handleEditTitleColumn = (title) => {
+    titleRef.current = title;
+    setTitleColumn(title)
     //Validate
-    if (!titleColumn.trim()) {
-      message.error("Thông tin đang trống");
+    if (!title.trim()) {
       return;
     }
     //Find index column
     const indexColumn = listColumns.current.columns.findIndex(
       (e) => e.id === column.id
     );
-    listColumns.current.columns[indexColumn].title = titleColumn.trim();
+    listColumns.current.columns[indexColumn].title = title.trim();
     //SAVE
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
     setColumns([...listColumns.current.columns]);
-    setIsEditTitleColumn(false);
+    // setIsEditTitleColumn(false);
     //Call Api
     if (localStorage.getItem("user")) {
-      editBoardContent({ editTitle: titleColumn.trim() });
+      editBoardContent({ editTitle: title.trim() });
     }
   };
 
@@ -86,6 +95,7 @@ function Column2(props) {
     message.success("Xóa thành công!");
   };
 
+
   useEffect(() => {
     isEditTitleColumn && editTitleRef.current.focus();
     if (isEditTitleColumn) {
@@ -93,15 +103,16 @@ function Column2(props) {
         if (event.target.closest(`#header-column-${column.id}`)) {
           setIsEditTitleColumn(true);
         } else {
-          // handleEditTitleColumn();
-          setTitleColumn(column?.title);
+          //Check title empty
+          if (!titleRef.current) {
+            setTitleColumn(column.title);
+            titleRef.current = null;
+          }
           setIsEditTitleColumn(false);
-
         }
       });
     }
   }, [isEditTitleColumn]);
-
 
   return (
     <div ref={setNodeRef} style={styleColumn} {...attributes}>
@@ -125,7 +136,7 @@ function Column2(props) {
             display: "flex",
             p: 2,
             alignItems: "center",
-            cursor: "pointer",
+            cursor: "pointer"
           }}
         >
           {isEditTitleColumn ? (
@@ -135,7 +146,10 @@ function Column2(props) {
                   value={titleColumn}
                   ref={editTitleRef}
                   onKeyDown={(e) => handleKeyPress(e)}
-                  onChange={(e) => setTitleColumn(e.target.value)}
+                  // onChange={(e) => setTitleColumn(e.target.value)}
+                  onChange={(e) => {
+                    handleEditTitleColumn(e.target.value);
+                  }}
                   type="text"
                 />
               </div>
@@ -146,6 +160,7 @@ function Column2(props) {
                 className="title-column"
                 onClick={() => setIsEditTitleColumn(true)}
               >
+                {/* {titleColumn} */}
                 {column.title}
               </div>
               <Popconfirm
@@ -162,6 +177,7 @@ function Column2(props) {
           )}
         </Box>
         <ListCards
+          setIsModal={setIsModal}
           isAddCard={isAddCard}
           setIsAddCard={setIsAddCard}
           cards={column.cards}
@@ -179,7 +195,7 @@ function Column2(props) {
               cursor: "pointer",
               display: "flex",
 
-              fontSize: "16px",
+              fontSize: "16px"
             }}
           >
             <div className="footer-column" onClick={() => setIsAddCard(true)}>

@@ -14,7 +14,8 @@ function Card1(props) {
     card,
     setColumns,
     listColumns,
-    handleDeleteSingleCard
+    handleDeleteSingleCard,
+    setIsModal
   } = props;
   const titleCardRef = useRef(null);
   const [isEditCard, setIsEditCard] = useState(false);
@@ -68,6 +69,8 @@ function Card1(props) {
     message.success("Xóa thành công!");
   };
 
+ 
+
   return (
     <>
       {isEditCard ? (
@@ -76,6 +79,7 @@ function Card1(props) {
           handleEditTitleCard={handleEditTitleCard}
           titleCardRef={titleCardRef}
           card={card}
+          setIsModal={setIsModal}
         />
       ) : (
         <Card
@@ -112,7 +116,10 @@ function Card1(props) {
             <div
               className="title-card"
               id={`card-${card.id}`}
-              onClick={() => setIsEditCard(true)}
+              onClick={() => {
+                setIsEditCard(true);
+           
+              }}
             >
               {card.title}
             </div>

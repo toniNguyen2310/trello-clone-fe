@@ -8,7 +8,7 @@ import AddColumn from "./AddColumn";
 
 
 function ListColumns(props) {
-  const { columns, listColumns, board, setColumns } = props;
+  const { columns, listColumns, board, setColumns, setIsModal } = props;
 
   return (
     <>
@@ -56,6 +56,7 @@ function ListColumns(props) {
                   column={column}
                   columns={columns}
                   setColumns={setColumns}
+                  setIsModal={setIsModal}
                 />
               );
             })}

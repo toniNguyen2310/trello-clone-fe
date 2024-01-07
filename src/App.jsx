@@ -18,6 +18,7 @@ function App() {
   const [board, setBoard] = useState({});
   const [user, setUser] = useState("");
   const listColumns = useRef([]);
+  const [isModal, setIsModal]= useState(false)
   const [checkFetch, setCheckFetch] = useState(false);
   const router = createBrowserRouter([
     {
@@ -55,23 +56,26 @@ function App() {
                   columns={columns}
                   setColumns={setColumns}
                   listColumns={listColumns}
+                  setIsModal={setIsModal}
                 />
                 <Loading spinning={spinning} />
               </Container>
+              <div id="modal" className="modal" style={{ display: isModal ? "block" : "none" }} >
+              </div>
             </>
-          ),
+          )
         },
 
         {
           path: "/login",
-          element: <Login />,
+          element: <Login />
         },
         {
           path: "/register",
-          element: <Register />,
-        },
-      ],
-    },
+          element: <Register />
+        }
+      ]
+    }
   ]);
   useEffect(() => {
     const getAccount = async () => {
@@ -89,7 +93,7 @@ function App() {
         const dataUser = {
           id: res.data.user._id,
           username: res.data.user.username,
-          email: res.data.user.email,
+          email: res.data.user.email
         };
         localStorage.setItem("user", JSON.stringify(dataUser));
         localStorage.setItem("listColumns", JSON.stringify(board));

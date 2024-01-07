@@ -19,7 +19,8 @@ function ListCards(props) {
     setColumns,
     listColumns,
     column,
-    columns
+    columns,
+    setIsModal
   } = props;
   const [listCard, setListCard] = useState(cards);
 
@@ -136,6 +137,7 @@ function ListCards(props) {
               setColumns={setColumns}
               columns={columns}
               handleDeleteSingleCard={handleDeleteSingleCard}
+              setIsModal={setIsModal}
             />
           );
         })}

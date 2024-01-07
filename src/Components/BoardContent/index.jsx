@@ -30,7 +30,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 };
 
 function BoardContent(props) {
-  const { columns, checkFetch, setColumns, board, setBoard, listColumns } =
+  const { columns, checkFetch, setColumns, board, setBoard, listColumns, setIsModal } =
     props;
 
   //check when start drag
@@ -375,6 +375,7 @@ function BoardContent(props) {
             board={board}
             columns={columns}
             setColumns={setColumns}
+            setIsModal={setIsModal}
           />
           <DragOverlay dropAnimation={customDropAnimation}>
             {!activeDragItemType && null}
