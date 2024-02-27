@@ -73,8 +73,8 @@ function Card1(props) {
   //Hide from add card when click board
   window.addEventListener("mouseup", (e) => {
     if (e.target.className === "content" || e.target.className === "MuiBox-root css-16njqy5") {
+      setIsEditCard(false);
       setIsAddCard(false);
-      setIsEditCard(false)
     }
   });
 
