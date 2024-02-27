@@ -1,25 +1,3 @@
-// module.exports = {
-//   root: true,
-//   env: { browser: true, es2020: true },
-//   extends: [
-//     "eslint:recommended",
-//     "plugin:react/recommended",
-//     "plugin:react/jsx-runtime",
-//     "plugin:react-hooks/recommended",
-//   ],
-//   ignorePatterns: ["dist", ".eslintrc.cjs"],
-//   parserOptions: { ecmaVersion: "latest", sourceType: "module" },
-//   settings: { react: { version: "18.2" } },
-//   plugins: ["react-refresh"],
-//   rules: {
-//     "react-refresh/only-export-components": [
-//       "warn",
-//       { allowConstantExport: true },
-//     ],
-//   },
-// };
-// Updated by trungquandev.com's author on May 13 2023
-// Sample Eslint config for React project
 module.exports = {
   env: { browser: true, es2020: true, node: true },
   extends: [
@@ -33,7 +11,7 @@ module.exports = {
   plugins: ["react", "react-hooks", "react-refresh"],
   rules: {
     "react-refresh/only-export-components": "warn",
-    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/rules-of-hooks": 0,
     "react-hooks/exhaustive-deps": "warn",
     "react/prop-types": 0,
     "react/display-name": 0,

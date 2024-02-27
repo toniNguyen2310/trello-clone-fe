@@ -77,6 +77,8 @@ function App() {
       ]
     }
   ]);
+
+  //Authenticate account when reloading the page
   useEffect(() => {
     const getAccount = async () => {
       if (
@@ -85,7 +87,7 @@ function App() {
       ) {
         return;
       }
-
+      //Api
       const res = await callFetchAccount();
 
       if (res && res.data) {
@@ -103,15 +105,6 @@ function App() {
     };
     getAccount();
   }, []);
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("user")) {
-  //     let nameUser = JSON.parse(localStorage.getItem("user")).username;
-  //     setUser(nameUser.split(" ")[nameUser.split(" ").length - 1]);
-  //   } else {
-  //     setUser("");
-  //   }
-  // }, [checkFetch]);
 
   return (
     <>

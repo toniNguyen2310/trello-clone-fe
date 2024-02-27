@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./login.scss";
 import { message } from "antd";
-
 import { NavLink, useNavigate } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineClose } from "react-icons/ai";
 import LoadingButton from "../Loading/LoadingButton";
 import { callLogin } from "../../Service/service";
+import { useEnterSubmit } from "../../Utilities/hooks/useEnterSubmit";
 function Login(props) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -13,36 +13,33 @@ function Login(props) {
   const [password, setPassword] = useState("");
   const [isShowPass, setIsShowPass] = useState(false);
   const refInput = useRef(null);
-
-  //Enter to submit
-  const handleKeyPress = (e) => {
-    let key = e.keyCode || e.which;
-    if (key === 13) {
-      handleLogin(e);
-    }
-  };
-
   let isDuplicate = false;
+
+  //Handle Login
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    //VALIDATE VALUE
+
+    //Validate email, password
     if (!email.trim() || !password.trim()) {
       message.error("Thông tin không được để trống");
       setIsLoading(false);
       return;
     }
+    //Api
     const res = await callLogin(email.trim(), password.trim());
 
     if (res?.data?.userWP && !isDuplicate) {
+      //Save access token and refresh token to Local Storage
       localStorage.setItem("access_token", res.data.accessToken);
       localStorage.setItem("refresh_token", res.data.refreshToken);
 
       const dataUser = {
         id: res.data.userWP._id,
         username: res.data.userWP.username,
-        email: res.data.userWP.email,
+        email: res.data.userWP.email
       };
+
       const board = res.data.userWP.board;
       localStorage.setItem("user", JSON.stringify(dataUser));
       localStorage.setItem("listColumns", JSON.stringify(board));
@@ -67,8 +64,8 @@ function Login(props) {
     <div className="login-page">
       <div className="login-page-form">
         <div className="login-page-form-lorup">
-          <NavLink to={`/login`}>Đăng nhập</NavLink> &nbsp; &Iota; &nbsp;{" "}
-          <NavLink to={`/register`} href="">
+          <NavLink to={"/login"}>Đăng nhập</NavLink> &nbsp; &Iota; &nbsp;{" "}
+          <NavLink to={"/register"} href="">
             Đăng ký
           </NavLink>
         </div>
@@ -82,7 +79,7 @@ function Login(props) {
                 ref={refInput}
                 placeholder="Vui lòng nhập email của bạn"
                 value={email}
-                onKeyUp={(e) => handleKeyPress(e)}
+                onKeyUp={(e) => useEnterSubmit(e, handleLogin)}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -92,7 +89,7 @@ function Login(props) {
                 id="passwordLogin"
                 type={isShowPass ? "text" : "password"}
                 placeholder="Vui lòng nhập mật khẩu"
-                onKeyUp={(e) => handleKeyPress(e)}
+                onKeyUp={(e) => useEnterSubmit(e, handleLogin)}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="on"
@@ -120,10 +117,10 @@ function Login(props) {
           </a>
           <p>
             Bạn chưa có tài khoản?
-            <NavLink to={`/register`}>Đăng ký ngay</NavLink>
+            <NavLink to={"/register"}>Đăng ký ngay</NavLink>
           </p>
         </div>
-        <NavLink to={`/`}>
+        <NavLink to={"/"}>
           <AiOutlineClose className="login-page-form-close" />
         </NavLink>
       </div>

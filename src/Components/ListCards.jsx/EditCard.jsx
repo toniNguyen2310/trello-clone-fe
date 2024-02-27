@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlineClose } from "react-icons/ai";
 
 function EditCard(props) {
-  const { titleCardRef, handleEditTitleCard, card, setIsEditCard, setIsModal } = props;
+  const { handleEditTitleCard, card, setIsEditCard, setIsModal } = props;
   const [titleCard, setTitleCard] = useState();
 
   const handleKeyPress = (e) => {
@@ -17,12 +16,12 @@ function EditCard(props) {
     setTitleCard(card.title);
   }, []);
 
+
   return (
     <div className="Add-edit-cart" id={`editCard-${card.id}`}>
       <div className="card card-edit">
         <textarea
           spellCheck="false"
-          // ref={titleCardRef}
           autoFocus
           placeholder="Nhập tiêu đề cho thẻ này"
           value={titleCard}
@@ -39,7 +38,7 @@ function EditCard(props) {
         <div
           className="card-edit-save-btn"
           onClick={() => {handleEditTitleCard(titleCard)
-           
+
           }}
         >
           Lưu

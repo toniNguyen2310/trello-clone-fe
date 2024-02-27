@@ -1,31 +1,28 @@
 import { editBoard } from "../Service/service";
 
-
-//Soft order array
-const softOrder = (array, order, key) => {
-  array.sort((a, b) => order.indexOf(a[key]) - order.indexOf(b[key]));
-  return array;
-};
-
 //initial data
-const initData = {
+export const initData = {
   id: "board-1",
   columnOrder: [],
   columns: []
 };
 
-//Create  Place holder card when column empty
-const createPlaceHolderCard = (column) => {
-  return {
-    id: `${column.id}-placeholder-card`,
-    boardId: column.boardId,
-    columnId: column.id,
-    FE_PlaceholderCard: true
-  };
+//Soft array order
+export const softOrder = (array, order, key) => {
+  array.sort((a, b) => order.indexOf(a[key]) - order.indexOf(b[key]));
+  return array;
 };
 
-//API edit board content
-const editBoardContent = (payload) => {
+//Validate
+export const validateEmail = (value) => {
+  const regexEmail =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  let isValid = regexEmail.test(value);
+  return isValid;
+};
+
+// edit board content API
+export const editBoardContent = (payload) => {
   //DATA TO CALL API
   let idUser = JSON.parse(localStorage.getItem("user")).id;
   // let idBoardLs = JSON.parse(localStorage.getItem("listColumns")).id;
@@ -98,4 +95,3 @@ const editBoardContent = (payload) => {
 };
 
 
-export { softOrder, initData, createPlaceHolderCard, editBoardContent };

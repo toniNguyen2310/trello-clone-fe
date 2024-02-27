@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { FaUserCircle } from "react-icons/fa";
 import { BiSolidUser } from "react-icons/bi";
@@ -15,12 +15,12 @@ function AppBar(props) {
     setBoard,
     user,
     setUser,
-    listColumns,
+    listColumns
   } = props;
   const navigate = useNavigate();
   const [isMenu, setIsMenu] = useState(false);
 
-  //HANDLE LOGOUT
+  //Handle logout
   const handleLogout = async () => {
     setSpinning(true);
     const res = await callLogout();
@@ -53,6 +53,7 @@ function AppBar(props) {
     }
   };
 
+  //Hide menu when click outside
   window.addEventListener("click", function (event) {
     if (!event.target.closest(`#account-title`)) {
       setIsMenu(false);

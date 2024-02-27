@@ -3,13 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
 import { editBoardContent } from "../../Utilities/constant";
 
+
 function AddColumn(props) {
   const { board, setColumns, listColumns } = props;
   const [isCreateColumn, setIsCreateColumn] = useState(false);
   const [titleColumn, setTitleColumn] = useState("");
   const addcolumnRef = useRef(null);
 
-  //PRESS ENTER TO ADD NEW COLUMN
+  //Enter submit
   const handleKeyPress = (e) => {
     let key = e.keyCode || e.which;
     if (key === 13) {
@@ -18,7 +19,7 @@ function AddColumn(props) {
     }
   };
 
-  //HANDLE ADD COLUMN
+  //Handle add new column
   const addNewColumn = () => {
     if (!titleColumn.trim()) {
       return;
@@ -34,20 +35,20 @@ function AddColumn(props) {
           id: `column-${Date.now()}-placeholder-card`,
           boardId: "board-1",
           columnId: "column-" + Date.now(),
-          FE_PlaceholderCard: true,
+          FE_PlaceholderCard: true
         }
       ]
     };
 
+    //Update state and save to Local Storage
     listColumns.current.columns.push(newColumn);
     listColumns.current.columnOrder.push(newColumn.id);
-    //SAVE
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
     setColumns([...listColumns.current.columns]);
     setTitleColumn("");
     addcolumnRef.current.focus();
 
-    //DATA TO CALL API
+    //Api
     if (localStorage.getItem("user")) {
       editBoardContent({ addColumn: newColumn });
     }
@@ -57,8 +58,9 @@ function AddColumn(props) {
     isCreateColumn && addcolumnRef.current.focus();
   }, [isCreateColumn]);
 
+  //Hide form add new column when click outside form
   window.addEventListener("click", function (event) {
-    if (!event.target.closest(`#add-column`)) {
+    if (!event.target.closest("#add-column")) {
       setIsCreateColumn(false);
     } else {
       setIsCreateColumn(true);

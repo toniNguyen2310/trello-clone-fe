@@ -11,12 +11,10 @@ function AddCard(props) {
     if (key === 13) {
       e.preventDefault();
       addToCard();
-      // if (column.cards.length === 1) {
-      //   e.target.blur();
-      // }
     }
   };
-  //ADD NEW CARD
+
+  //Handle add new card
   const addToCard = () => {
     if (!titleCard.trim()) {
       return;
@@ -29,6 +27,7 @@ function AddCard(props) {
   useEffect(() => {
     addCardRef.current.focus();
   }, []);
+
 
   return (
     <div className="Add-edit-cart" id={`add-card-${column.id}`}>

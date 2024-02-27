@@ -7,7 +7,6 @@ import { BsThreeDots } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
 import { editBoardContent } from "../../Utilities/constant.js";
 import { message, Popconfirm } from "antd";
-import { Event } from "@mui/icons-material";
 
 const COLUMN_HEADER_HEIGHT = "50px";
 const COLUMN_FOOTER_HEIGHT = "55px";
@@ -19,7 +18,6 @@ function Column2(props) {
   const [isEditTitleColumn, setIsEditTitleColumn] = useState(false);
   const titleRef = useRef(null)
   const [titleColumn, setTitleColumn] = useState(column?.title);
-
   const {
     attributes,
     isDragging,
@@ -31,11 +29,12 @@ function Column2(props) {
   const styleColumn = {
     transform: CSS.Translate.toString(transform),
     transition,
+    // height: "fit-content",
     height: "100%",
     opacity: isDragging ? "0.5" : undefined
   };
 
-  //Enter to change title
+  //Enter Submit
   const handleKeyPress = (e) => {
     let key = e.keyCode || e.which;
     if (key === 13) {
@@ -49,7 +48,7 @@ function Column2(props) {
     }
   };
 
-  //HANDLE EDIT TITLE COLUMN
+  //Handle edit title column
   const handleEditTitleColumn = (title) => {
     titleRef.current = title;
     setTitleColumn(title)
@@ -62,17 +61,17 @@ function Column2(props) {
       (e) => e.id === column.id
     );
     listColumns.current.columns[indexColumn].title = title.trim();
-    //SAVE
+    //Update state and Save to Local Storage
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
     setColumns([...listColumns.current.columns]);
-    // setIsEditTitleColumn(false);
+
     //Call Api
     if (localStorage.getItem("user")) {
       editBoardContent({ editTitle: title.trim() });
     }
   };
 
-  //HANDLE DELETE COLUMN
+  //Handle delete column
   const handleDeleteColumn = (id) => {
     listColumns.current.columns = listColumns.current.columns.filter(
       (e) => e.id !== id
@@ -80,10 +79,10 @@ function Column2(props) {
     listColumns.current.columnOrder = listColumns.current.columnOrder.filter(
       (e) => e != id
     );
-    //SAVE
+    //Update state and Save to Local Storage
     localStorage.setItem("listColumns", JSON.stringify(listColumns.current));
     setColumns([...listColumns.current.columns]);
-    //Call Api
+    //Api
     if (localStorage.getItem("user")) {
       editBoardContent({ deleteColumn: id });
     }
@@ -95,9 +94,9 @@ function Column2(props) {
     message.success("Xóa thành công!");
   };
 
-
   useEffect(() => {
     isEditTitleColumn && editTitleRef.current.focus();
+    //Handle update title column when click outside form
     if (isEditTitleColumn) {
       window.addEventListener("click", function (event) {
         if (event.target.closest(`#header-column-${column.id}`)) {
@@ -115,7 +114,7 @@ function Column2(props) {
   }, [isEditTitleColumn]);
 
   return (
-    <div ref={setNodeRef} style={styleColumn} {...attributes}>
+    <div className="content" ref={setNodeRef} style={styleColumn} {...attributes}>
       <Box
         sx={{
           minWidth: "280px",

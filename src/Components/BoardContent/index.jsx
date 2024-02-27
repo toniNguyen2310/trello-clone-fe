@@ -1,9 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import { initData, softOrder } from "../../Utilities/constant";
-
+import { editBoardContent, initData, softOrder } from "../../Utilities/constant";
 import {
   DndContext,
   useSensor,
@@ -19,10 +16,7 @@ import ListColumns from "../ListColumns";
 import Column2 from "../ListColumns/Column2";
 import Card from "../ListCards.jsx/Card";
 import { cloneDeep, isEmpty } from "lodash";
-import {
-  createPlaceHolderCard,
-  editBoardContent
-} from "../../Utilities/constant";
+import { useCreatePlaceHolderCard } from "../../Utilities/hooks/useCreatePlaceHolderCard";
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: "ACTIVE_DRAG_ITEM_TYPE_COLUMN",
@@ -32,29 +26,33 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 function BoardContent(props) {
   const { columns, checkFetch, setColumns, board, setBoard, listColumns, setIsModal } =
     props;
-
-  //check when start drag
   const [activeDragItemId, setActiveDragItemId] = useState(null);
   const [activeDragItemType, setActiveDragItemType] = useState(null);
   const [activeDragItemData, setActiveDragItemData] = useState(null);
   const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] =
     useState(null);
 
+  //Setup library dnd-kit
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
       distance: 10
     }
   });
   const sensors = useSensors(mouseSensor);
+  const customDropAnimation = {
+    sideEffects: defaultDropAnimationSideEffects({
+      styles: { active: { opacity: "0.5" } }
+    })
+  };
 
-  //find column with cardID
+  //find the column with cardId
   const findColumnByCardId = (cardId) => {
     return columns.find((column) =>
       column?.cards?.map((card) => card.id)?.includes(cardId)
     );
   };
 
-  //Update state when move between different columns
+  //Update status when moving between 2 different columns
   const moveCardBetweenDifferentColumns = (
     overColumn,
     overCardId,
@@ -65,6 +63,7 @@ function BoardContent(props) {
     activeDraggingCardData,
     dragEnd
   ) => {
+
     setColumns((prevColumns) => {
       const overCardIndex = overColumn?.cards?.findIndex(
         (card) => card.id === overCardId
@@ -80,7 +79,6 @@ function BoardContent(props) {
           : overColumn?.cards?.length + 1;
 
       const nextColumns = cloneDeep(prevColumns);
-
       const nextActiveColumn = nextColumns.find(
         (column) => column.id === activeColumn.id
       );
@@ -93,9 +91,9 @@ function BoardContent(props) {
           (card) => card.id !== activeDraggingCardId
         );
 
-        //filter placeholder when column empty
+        //Create a placeholder card when the column is empty
         if (isEmpty(nextActiveColumn.cards)) {
-          nextActiveColumn.cards = [createPlaceHolderCard(nextActiveColumn)];
+          nextActiveColumn.cards = [useCreatePlaceHolderCard(nextActiveColumn)];
         }
 
         nextActiveColumn.cardOrder = nextActiveColumn.cards.map(
@@ -124,29 +122,14 @@ function BoardContent(props) {
 
         nextOverColumn.cardOrder = nextOverColumn.cards.map((card) => card.id);
       }
+
       if (dragEnd) {
         let customColumnToSaveLs = JSON.parse(JSON.stringify(nextColumns));
         let indexEmpty = customColumnToSaveLs.findIndex(
           (e) => e.cards[0].FE_PlaceholderCard
         );
-        let indexSortable = nextColumns.findIndex(
-          (e) => e.cards[0].FE_PlaceholderCard
-        );
-        let indexEnd = customColumnToSaveLs.findIndex(
-          (e) => e.id === nextOverColumn.id
-        );
 
-        // let cardsWithoutSortable = customColumnToSaveLs[indexEnd].cards.map(
-        //   (e) => {
-        //     if (e.sortable) {
-        //       delete e.sortable;
-        //     }
-        //     return e;
-        //   }
-        // );
-
-        // customColumnToSaveLs[indexEnd].cards = cardsWithoutSortable;
-        //Khi có column rỗng
+        //The Column is empty === Array is empty
         if (indexEmpty > -1) {
           customColumnToSaveLs[indexEmpty].cardOrder = [];
           customColumnToSaveLs[indexEmpty].cards = [];
@@ -157,17 +140,16 @@ function BoardContent(props) {
           "listColumns",
           JSON.stringify(listColumns.current)
         );
-
-        //CALL API HERE
       }
 
       return nextColumns;
     });
   };
 
-  //HANDLE DRAG START
+  //Handle drag start
   const handleDragStart = (event) => {
     setActiveDragItemId(event?.active?.id);
+    //Check drag column or card
     setActiveDragItemType(
       event?.active?.data?.current?.columnId
         ? ACTIVE_DRAG_ITEM_TYPE.CARD
@@ -179,7 +161,7 @@ function BoardContent(props) {
     }
   };
 
-  //HANDLE DRAG OVER
+  //Handle drag over
   const handleDragOver = (event) => {
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) return;
     const { active, over } = event;
@@ -211,12 +193,12 @@ function BoardContent(props) {
     }
   };
 
-  //HANDLE DRAG END
+  //Handle drag end
   const handleDragEnd = (event) => {
     const { active, over } = event;
     if (!active || !over) return;
 
-    //Handle drop card
+    //Type: Drop Card
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
       const {
         id: activeDraggingCardId,
@@ -229,7 +211,7 @@ function BoardContent(props) {
       if (!activeColumn || !overColumn) return;
 
       if (oldColumnWhenDraggingCard.id !== overColumn.id) {
-        //DIFFERENT COLUMN
+        //Handle drop cards when in different columns
         let dragEnd = true;
         moveCardBetweenDifferentColumns(
           overColumn,
@@ -242,7 +224,7 @@ function BoardContent(props) {
           dragEnd
         );
       } else {
-        //SAME COLUMN
+        //Handle drop cards when in same columns
         const oldCardIndex = oldColumnWhenDraggingCard?.cards?.findIndex(
           (c) => c.id === activeDragItemId
         );
@@ -254,6 +236,8 @@ function BoardContent(props) {
           oldCardIndex,
           newCardIndex
         );
+
+        //Update state
         setColumns((prevColumns) => {
           const nextColumns = cloneDeep(prevColumns);
           const targetColumn = nextColumns.find(
@@ -272,9 +256,10 @@ function BoardContent(props) {
       }
     }
 
-    //Handle drop column
+    //Type: Drop Column
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
       if (active.id != over.id) {
+        //Find the new and the old column to swap the two columns together
         const oldIndex = columns.findIndex((c) => c.id === active.id);
         const newIndex = columns.findIndex((c) => c.id === over.id);
         const newColumn = arrayMove(columns, oldIndex, newIndex);
@@ -298,22 +283,14 @@ function BoardContent(props) {
     setOldColumnWhenDraggingCard(null);
   };
 
-  const customDropAnimation = {
-    sideEffects: defaultDropAnimationSideEffects({
-      styles: { active: { opacity: "0.5" } }
-    })
-  };
 
-  //RENDER LIST BOARD
+  //Get Board content in Local Storage
   useEffect(() => {
-    //Khi có sẵn list trong DS
-
     if (localStorage.getItem("listColumns")) {
       const boardInitData = JSON.parse(localStorage.getItem("listColumns"));
-
       for (let i = 0; i < boardInitData.columns.length; i++) {
         if (boardInitData.columns[i].cards.length === 0) {
-          let placeholder = createPlaceHolderCard(boardInitData.columns[i]);
+          let placeholder = useCreatePlaceHolderCard(boardInitData.columns[i]);
           boardInitData.columns[i].cards.push(placeholder);
           boardInitData.columns[i].cardOrder.push(placeholder.id);
         }
@@ -330,7 +307,7 @@ function BoardContent(props) {
         localStorage.setItem("listColumns", JSON.stringify(boardInitData));
       }
     } else {
-      //Không có trong DS
+      //Local Storage is empty
       const boardInitData = initData;
       if (boardInitData) {
         setBoard(boardInitData);
@@ -344,7 +321,6 @@ function BoardContent(props) {
         localStorage.setItem("listColumns", JSON.stringify(boardInitData));
       }
     }
-
   }, [checkFetch]);
 
   return (
@@ -365,10 +341,8 @@ function BoardContent(props) {
             height: (theme) => theme.trello.boardContentHeight,
             p: "10px 0 "
 
-            // display: "flex",
-            // overflowX: "auto",
-            // overflowY: "hidden",
           }}
+          className='board-content'
         >
           <ListColumns
             listColumns={listColumns}
@@ -388,20 +362,6 @@ function BoardContent(props) {
           </DragOverlay>
         </Box>
       </DndContext>
-      {/* <div className="container">
-        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-          <SortableContext
-            strategy={horizontalListSortingStrategy}
-            items={columns?.map((e) => e.id)}
-          >
-            {columns &&
-              columns.length > 0 &&
-              columns.map((column) => {
-                return <ColumnTest key={column.id} column={column} />;
-              })}
-          </SortableContext>
-        </DndContext>
-      </div> */}
     </>
   );
 }

@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import "./register.scss";
 import { NavLink } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineClose } from "react-icons/ai";
-import { message, notification } from "antd";
+import { message } from "antd";
 import LoadingButton from "../Loading/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import { callRegister } from "../../Service/service";
+import { useEnterSubmit } from "../../Utilities/hooks/useEnterSubmit";
+import { validateEmail } from "../../Utilities/constant";
 
 function Register(props) {
   const navigate = useNavigate();
@@ -16,27 +18,14 @@ function Register(props) {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleKeyPress = (e) => {
-    let key = e.keyCode || e.which;
-    if (key === 13) {
-      handleRegister(e);
-    }
-  };
-
-  //Validate fields
-  const validateEmail = (value) => {
-    const regexEmail =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    let isValid = regexEmail.test(value);
-    return isValid;
-  };
 
   //HANDLE REGISTER
   let isDuplicate = false;
   const handleRegister = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    //VALIDATE
+
+    //Validate email, username, password
     if (!email || !username || !password) {
       message.error("Thông tin không được để trống");
       setIsLoading(false);
@@ -52,8 +41,7 @@ function Register(props) {
       setIsLoading(false);
       return;
     }
-
-    //CALL API
+    //Api
     const res = await callRegister(
       email.toLowerCase().trim(),
       username.trim(),
@@ -101,7 +89,7 @@ function Register(props) {
                 placeholder="Vui lòng nhập email của bạn"
                 ref={refInput}
                 value={email}
-                onKeyUp={(e) => handleKeyPress(e)}
+                onKeyUp={(e) => useEnterSubmit(e, handleRegister)}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -114,7 +102,7 @@ function Register(props) {
                 id="name"
                 placeholder="Họ và tên"
                 value={username}
-                onKeyUp={(e) => handleKeyPress(e)}
+                onKeyUp={(e) => useEnterSubmit(e, handleRegister)}
                 onChange={(e) => setUserName(e.target.value)}
               />
             </div>
@@ -127,7 +115,7 @@ function Register(props) {
                 type={isShowPass ? "text" : "password"}
                 placeholder="Vui lòng nhập mật khẩu"
                 value={password}
-                onKeyUp={(e) => handleKeyPress(e)}
+                onKeyUp={(e) => useEnterSubmit(e, handleRegister)}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="on"
               />
